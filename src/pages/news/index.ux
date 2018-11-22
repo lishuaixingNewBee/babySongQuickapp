@@ -1,0 +1,86 @@
+<template>
+  <div class="news-page">
+    <tabs onchange="changeTabIndex" if="{{newsChannels.length}}">
+      <tab-bar class="tab-bar">
+        <stack class="tab-item-warp" for="(index,item) in newsChannels">
+          <text class="tab-item {{index ===currentIndex ? 'active' : ''}}">{{item.title}}</text>
+          <div if="index===currentIndex" class="line"></div>
+        </stack>
+      </tab-bar>
+      <tab-content class="tab-content">
+        <div class="tab-content-section" for="(index,item) in newsChannels">
+          <tab-item cid="{{item.cid}}" if="{{item.show}}"></tab-item>
+        </div>
+      </tab-content>
+    </tabs>
+    <loading-view if="{{!newsChannels.length}}"></loading-view>
+  </div>
+</template>
+<!-- 更多卡片 -->
+<import name="tab-item" src="./tab-item.ux"></import>
+<!-- loading组件 -->
+<import name="loading-view" src="../../components/loading/index.ux"></import>
+<script>
+import { getNewsList } from '../../api/news.js' // 首页数据
+export default {
+  props: {
+    newsChannels: {
+      type: Array,
+      default() {
+        return []
+      }
+    }
+  },
+  data() {
+    return {
+      currentIndex: 0,
+      list: []
+    }
+  },
+  onInit() {
+  },
+  changeTabIndex(e) {
+    const index = e.index
+    const item = Object.assign({}, this.newsChannels[index])
+    item.show = true
+    this.newsChannels.splice(index, 1, item)
+    this.currentIndex = index
+  }
+}
+</script>
+<style lang="less">
+@import '../../common/styles/index.less';
+.news-page {
+  background-color: @color-background-d;
+  flex-direction: column;
+  .tab-bar {
+    height: 75px;
+    background-color: #ffffff;
+    border-top-width: 1px;
+    border-color: rgba(255, 255, 255, 0.1);
+    .tab-item-warp {
+      flex: 1;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      text {
+        width: 100%;
+        height: 74px;
+        line-height: 74px;
+        font-size: 28px;
+        color: #71777d;
+        text-align: center;
+      }
+      .active {
+        font-size: 32px;
+        color: #424242;
+      }
+      .line {
+        height: 4px;
+        width: 50%;
+        background-color: #424242;
+      }
+    }
+  }
+}
+</style>

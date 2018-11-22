@@ -1,0 +1,73 @@
+<template>
+    <block>
+        <div class="minPlay_container minPlay-show" if="{{visible}}">
+            <image src="/common/image/music4.svg" class="{{isplaying ? 'musicisplay' : ''}}" onclick="open"></image>
+        </div>
+    </block>
+</template>
+<script>
+export default {
+  props: {
+    isplaying: {
+      type: Boolean,
+      default: true
+    }
+  },
+  data() {
+    return {
+      visible: false
+    }
+  },
+  onInit() {
+    if (this.$app.$def.musicData.list.length) {
+      this.visible = true
+    }
+  },
+  open() {
+    this.$app.$def.router.push({
+      uri: '/pages/play'
+    })
+  }
+}
+</script>
+<style lang="less">
+@import '../../common/styles/index.less';
+.minPlay_container {
+  width: 76px;
+  height: 76px;
+  position: fixed;
+  border-radius: 38px;
+  bottom: 160px;
+  right: 25px;
+  z-index: 1;
+  background-color: #ffffff;
+  transform: translateY(236px);
+  image {
+    width: 100%;
+    height: 100%;
+    border-radius: 38px;
+  }
+}
+.minPlay-show {
+  animation-name: bottomdrawerenter;
+  animation-fill-mode: forwards;
+  animation-duration: 300ms;
+  animation-timing-function: linear;
+}
+.musicisplay {
+  animation-name: rotate;
+  animation-duration: 3000ms;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes bottomdrawerenter {
+  0% {
+    transform: translateY(236px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+</style>

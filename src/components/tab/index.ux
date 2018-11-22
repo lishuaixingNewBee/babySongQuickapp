@@ -1,0 +1,63 @@
+<template>
+  <div class="footer menu_wrap">
+    <block if={{tabBar.tabs}} for="(index, item) in tabBar.tabs">
+      <div class="menu-item" onclick="clickHandler(index)">
+        <image class="icon" src="{{ currentIndex === index ? item.active_icon : item.default_icon }}"></image>
+        <div class="tilte">
+          <text style="color:{{currentIndex === index ? tabBar.active_color : tabBar.color }}">{{item.title}}</text>
+        </div>
+      </div>
+    </block>
+  </div>
+</template>
+<script>
+export default {
+  props: {
+    tabBar: {
+      type: Object,
+      default() {
+        return {}
+      }
+    },
+    currentIndex: {
+      type: Number,
+      default: 1
+    }
+  },
+  data() {
+    return {
+    }
+  },
+  clickHandler(index) {
+    this.$dispatch('changeCurrentIndex', index)
+  },
+  onInit() {
+  }
+}
+</script>
+<style lang="less">
+@import '../../common/styles/index.less';
+.menu_wrap {
+  height: 110px;
+  position: fixed;
+  z-index: 3;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border-top-width: 1px;
+  border-color: rgba(255, 255, 255, 0.1);
+  background-color: #ffffff;
+  .menu-item {
+    flex: 1;
+    .flex-box-mixins(column, center, center);
+    image {
+      width: 55px;
+    }
+    .tilte {
+      text {
+        font-size: 25px;
+      }
+    }
+  }
+}
+</style>

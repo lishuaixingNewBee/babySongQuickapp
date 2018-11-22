@@ -1,0 +1,390 @@
+<template>
+  <div class="music_page page_container">
+    <!-- 歌单 -->
+    <list class="songlist_wrap" onscrollbottom="loadMoreData">
+      <list-item type="headerContainer" class="music_info">
+        <!-- 顶部 -->
+        <div class="header_container">
+          <stack>
+            <image class="header_bg" src="{{image}}"></image>
+            <div class="header_content">
+              <stack class="img_wrap">
+                <image class="movie-img" src="{{image}}" />
+                <div class="count_box">
+                  <image class="icon" src="/common/image/music2.svg"></image>
+                  <text class="num">{{play_count}}</text>
+                </div>
+              </stack>
+              <div class="desc">
+                <text class="title">
+                  {{title}}
+                </text>
+                <text class="text">
+                  {{description}}
+                </text>
+              </div>
+            </div>
+          </stack>
+        </div>
+        <!-- 歌单按钮 -->
+        <div class="play_all_btn">
+          <div class="list_info">
+            <div class="left">
+              <image class="icon-play" src="/common/image/play.svg"></image>
+              <div class="text_wrap" onclick="playMusic(0)">
+                <text class="t1">播放全部</text><text class="t2"> (共{{item_count}}首)</text>
+              </div>
+            </div>
+            <div class="right" onclick="share">
+              <image class="icon-yduifenxiang1" src="/common/image/share.svg"></image>
+              <text class="num">分享给小朋友</text>
+            </div>
+          </div>
+        </div>
+      </list-item>
+      <!-- 歌单列表 -->
+      <block for="(index, item) in musicList">
+        <list-item type="item" onclick="playMusic(index)">
+          <div class="musilistItem {{index == currentIndex ? 'cerrentMusic':''}}">
+            <text class="musilistItem_num {{index == currentIndex ? 'cerrentMusic':''}}">{{index+1}}</text>
+            <div class='musilistItem_info'>
+              <div class='musilistItem_info_left'>
+                <div class='musilistItem_info_top'>
+                  <text class="musilistItem_info_name {{index == currentIndex ? 'cerrentMusic':''}}">{{item.title}}</text>
+                </div>
+                <text class="musilistItem_info_bottom {{index == currentIndex ? 'cerrentMusic':''}}">{{item.duration}}</text>
+              </div>
+              <image class='myplayicon icon-play' src="{{index == currentIndex ? '/common/image/play2.svg':'/common/image/play.svg'}}"></image>
+            </div>
+          </div>
+        </list-item>
+      </block>
+      <load-more has-more="{{hasMore}}" if="{{hasMore}}"></load-more>
+    </list>
+    <min-play isplaying="{{isplaying}}" if="{{minplayVisible}}"></min-play>
+  </div>
+</template>
+<!-- 播放悬浮 -->
+<import name="min-play" src="../../../components/minplay/index.ux"></import>
+<!-- load-more组件 -->
+<import name="load-more" src="../../../components/load-more/index.ux"></import>
+<script>
+import { getAlbum } from '../../../api/album' // 专辑
+import util from '../../../common/js/util' // 工具类
+export default {
+  protected: {
+    defaultIndex: '',
+    title: '',
+    album_id: ''
+  },
+  private: {
+    isplaying: true, // 是否处于播放状态
+    minplayVisible: false, // 是否展示minPlay
+    page_no: 1,
+    page_size: 1000,
+    isLoading: false,
+    hasMore: false,
+    currentIndex: -1,
+    image: '',
+    play_count: '',
+    description: '',
+    item_count: '',
+    musicList: []
+  },
+  onInit() {
+    if (this.defaultIndex) { // 是否带参数
+      this.currentIndex = this.defaultIndex
+    }
+    this.musicData = this.$app.$def.musicData
+    this.audio = this.$app.$def.audio // 获取音频组件
+    this.$page.setTitleBar({ text: decodeURIComponent(this.title) })
+    this.getList('down')
+  },
+  onShow() {
+    $umeng_stat.resume(this)
+    this.minplayVisible = true
+    this.isplaying = false
+    if (this.audio.src) {
+      // 音乐开始
+      this.audio.onplay = () => {
+        this.isplaying = true
+      }
+      // 暂停时触发
+      this.audio.onpause = () => {
+        this.isplaying = false
+      }
+      // 音频播放进度控制
+      this.audio.ontimeupdate = () => {
+        this.isplaying = true
+        if (this.musicData.album_id && this.musicData.album_id === this.album_id) {
+          this.startFind()
+        }
+      }
+    }
+  },
+  onHide() {
+    $umeng_stat.pause(this)
+    this.$app.$def.audioHide.call(this)
+  },
+  onDestroy() {
+    this.$app.$def.audioHide.call(this)
+  },
+  setInfo(data) {
+    this.title = data.album_name
+    data.play_count ? this.play_count = util.numW(data.play_count) : this.play_count = util.numW(util.randomNum(5000, 999999))
+    this.item_count = data.item_count
+    this.description = data.description
+    this.image = data.image || data.thumbnail
+  },
+  loadMoreData() {
+    if (this.isLoading && !this.hasMore) {
+      // 防止数据还没回来再次或者已经没有数据触发加载
+      return
+    }
+    this.getList('up')
+  },
+  playMusic(index) {
+    this.currentIndex = index
+    this.musicData.list = this.musicList
+    this.musicData.currentPlayerId = this.musicList[index].article_id
+    this.musicData.album_id = this.album_id
+    this.$app.$def.router.push({
+      uri: '/pages/play'
+    })
+  },
+  async getList(type) {
+    if (type === 'down') { // 下拉操作翻页置为1
+      this.page_no = 1
+    }
+    await getAlbum(this.album_id, this.page_no, this.page_size).then(res => {
+      const data = res.data
+      this.setInfo(data)
+      this.isLoading = true
+      this.page_no++ // 开启翻页++
+      this.hasMore = res.has_next
+      if (data.artilces.length) {
+        const list = data.artilces.slice(0);
+        list.forEach(v => {
+          v.duration = util.formatSeconds(v.audios[0].duration)
+        })
+        type === 'down' ? this.musicList = list : this.musicList = this.musicList.concat(list)
+      }
+    }).catch(e => {
+      this.isLoading = false
+      this.$app.$def.prompt.showToast({
+        message: '网络异常,一会再试试！'
+      })
+    })
+  },
+  startFind() {
+    const currentPlayerId = this.musicData.currentPlayerId // 获取当前播放歌曲的ID
+    if (currentPlayerId) {
+      // 如果找到当前id,通过ID获取当前索引
+      const currentI = this.musicList.findIndex(
+        item => item.article_id === currentPlayerId
+      )
+      if (currentI > -1) {
+        this.currentIndex = currentI
+      }
+    }
+  },
+  share() {
+    this.$app.$def.shareWx()
+  },
+  onMenuPress() { // 点击右上角按钮
+    this.$app.$def.showMenu()
+  }
+}
+</script>
+<style lang="less">
+@import '../../../common/styles/index.less';
+.music_info {
+  flex-direction: column;
+  .header_container {
+    flex-direction: column;
+    stack {
+      height: 334px;
+      .header_bg {
+        width: 100%;
+        background-repeat: no-repeat;
+        background-size: cover;
+        transform: scale(1.5);
+      }
+      .header_content {
+        width: 100%;
+        height: 100%;
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 0px 20px 100px 20px;
+        background: linear-gradient(
+          rgb(32, 178, 170),
+          rgba(255, 255, 255, 0.3)
+        );
+        .img_wrap {
+          height: 242px;
+          width: 242px;
+          border-radius: 10px;
+          background-color: @color-background-l;
+          image {
+            width: 100%;
+            height: 100%;
+            border-radius: 10px;
+          }
+          .count_box {
+            height: 30px;
+            margin-top: 15px;
+            padding: 0 6px 0 10px;
+            border-top-right-radius: 15px;
+            border-bottom-right-radius: 15px;
+            background-color: rgba(000, 000, 000, 0.2);
+            font-size: 20px;
+            justify-content: center;
+            align-items: center;
+            .icon {
+              background-size: cover;
+              height: 20px;
+              width: 20px;
+            }
+            .num {
+              color: #ffffff;
+              font-size: 20px;
+              margin-left: 8px;
+            }
+          }
+        }
+        .desc {
+          flex: 1;
+          flex-direction: column;
+          margin-left: 20px;
+          padding: 13px 0;
+          .title {
+            height: 40px;
+            line-height: 40px;
+            margin-bottom: 16px;
+            color: #ffffff;
+            font-weight: bold;
+            font-size: @font-size-large;
+            .no-wrap();
+          }
+          .text {
+            line-height: 40px;
+            .no-wrap(4);
+            font-size: @font-size-medium;
+            color: @color-text-ll;
+          }
+        }
+      }
+    }
+  }
+  .play_all_btn {
+    margin-top: -50px;
+    .list_info {
+      flex-direction: row;
+      flex: 1;
+      background-color: #f9f9f9;
+      border-top-left-radius: 20px;
+      border-top-right-radius: 20px;
+      .left {
+        flex: 1;
+        align-items: center;
+        padding-left: 40px;
+        .icon-play {
+          width: 40px;
+          height: 40px;
+          margin-right: 10px;
+        }
+        .text_wrap {
+          flex-direction: row;
+          .t1 {
+            font-size: @font-size-large;
+            height: 100px;
+            line-height: 100px;
+            color: @color-highlight-background;
+          }
+          .t2 {
+            font-size: @font-size-large;
+            height: 100px;
+            line-height: 100px;
+            color: @color-text-d;
+          }
+        }
+      }
+      .right {
+        border-top-right-radius: 15px;
+        flex-direction: row;
+        align-items: center;
+        background-color: rgb(32, 178, 170);
+        padding: 0 15px;
+        .icon-yduifenxiang1 {
+          height: 30px;
+          height: 30px;
+          margin-right: 10px;
+        }
+        .num {
+          height: 100px;
+          font-size: @font-size-large;
+          line-height: 100px;
+          color: @color-text-ll;
+        }
+      }
+    }
+  }
+}
+.songlist_wrap {
+  flex-direction: column;
+  .musilistItem {
+    flex: 1;
+    justify-content: flex-start;
+    align-items: center;
+    height: 110px;
+  }
+  .musilistItem_num {
+    width: 110px;
+    height: 110px;
+    text-align: center;
+    line-height: 110px;
+    flex-shrink: 0;
+    font-size: 28px;
+    color: #666666;
+  }
+  .musilistItem_info {
+    height: 100%;
+    flex: 1;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom-width: 1px;
+    border-color: #f2f2f2;
+  }
+  .musilistItem_info_left {
+    height: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 10px;
+    width: 530px;
+  }
+  .musilistItem_info_top {
+    width: 530px;
+    font-size: 30px;
+    .no-wrap();
+  }
+  .musilistItem_info_name {
+    .no-wrap();
+    color: #333333;
+  }
+  .musilistItem_info_alias {
+    color: #999999;
+  }
+  .musilistItem_info_bottom {
+    font-size: 20px;
+    color: #999999;
+  }
+  .myplayicon {
+    margin-right: 40px;
+    height: 40px;
+  }
+  .cerrentMusic {
+    color: #20b2aa;
+  }
+}
+</style>

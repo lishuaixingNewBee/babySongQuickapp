@@ -1,0 +1,395 @@
+<template>
+  <div class="play_page page_container">
+    <stack>
+      <!-- 背景图 -->
+      <div class="container_bg">
+        <stack class="container_box">
+          <image class="img_wrap" src="{{songList[currentIndex].poster_url}}"></image>
+          <div class="wave_container">
+            <!-- <div class="wave_box">
+              <div class="hd" style="transform:rotateZ({{angle}}deg);">
+                <image class="wave" src="/common/image/wave.png" resize-mode="cover"></image>
+                <image class="wave wave-bg" src="/common/image/wave2.png" resize-mode="cover"></image>
+              </div>
+            </div> -->
+          </div>
+          <div class="bg_color"></div>
+        </stack>
+      </div>
+      <!-- cd -->
+      <div class="cd_container">
+        <stack class="cd_box">
+          <stack class="coverImgbox {{isplaying ? 'musicisplay':'musicispaused'}}">
+            <image class="coverbgImg" src="http://c2.h54hterh.top/manage/image/259de4e98ecb9cb5f66e15ec218d6883.png"></image>
+            <image class="songcoverImg" src="{{songList[currentIndex].poster_url}}"></image>
+            <div class="icon-play" onclick="playMusic">
+              <image src="/common/image/play3.png" if="{{!isplaying}}"></image>
+            </div>
+          </stack>
+          <div class="turn_container">
+            <!-- 取消控制针效果,有bug start_turn -->
+            <image class="turn {{isplaying ? 'start_turn' : 'start_turn'}}" src="/common/image/control.png"></image>
+          </div>
+        </stack>
+      </div>
+      <!-- 控件 -->
+      <div class="play_minbar">
+        <div class='progress-wrapper'>
+          <text>{{formatCurrentTime}}</text>
+          <slider class='progress' min="0" max="{{duration}}" selected-color="#20B2AA" color="#f4f4f4" step="1" value="{{currentTime}}" onchange="sliderChange"></slider>
+          <text>{{formatDuration}}</text>
+        </div>
+        <div class="operators">
+          <div class="icon mode" onclick="mode">
+            <image class="icon-playbar-singlecycle" src="/common/image/share2.svg"></image>
+          </div>
+          <div class="icon prev" onclick="prev">
+            <image class="icon-pre" src="/common/image/prev.svg"></image>
+          </div>
+          <div class="icon play" onclick="playMusic">
+            <image class="icon-pause" src="/common/image/pause.svg" if="{{isplaying}}"></image>
+            <image class="icon-play" src="/common/image/play2.svg" if="{{!isplaying}}"></image>
+          </div>
+          <div class="icon next" onclick="next">
+            <image class="icon-next" src="/common/image/next.svg"></image>
+          </div>
+          <div class="icon music-list" onclick="handlerList">
+            <image class="icon-music-list" src="/common/image/music-list.svg"></image>
+          </div>
+        </div>
+      </div>
+    </stack>
+    <song-list if="{{songList.length}}" song-list-visible="{{songListVisible}}" current-index="{{currentIndex}}" song-list="{{songList}}" @on-close="close"></song-list>
+  </div>
+</template>
+<import name="song-list" src="../../components/songlist/index.ux"></import>
+<script>
+let musicData = {}
+let audio = {}
+import util from '../../common/js/util' // 工具类
+export default {
+  private: {
+    placement: '',
+    songListVisible: false,
+    currentIndex: 0, // 当前播放索引
+    album_id: '',
+    songList: [],
+    playerData: null, // 当前歌曲信息
+    formatCurrentTime: '00:00',
+    formatDuration: '00:00',
+    duration: 0, // 歌曲时长
+    currentTime: 0, // 当前播放时间
+    isplaying: false
+  },
+  onInit() {
+    const app = this.$app.$def
+    musicData = app.musicData
+    audio = app.audio
+    this.album_id = musicData.album_id
+    this.songList = musicData.list
+    this.playerData = this.songList[this.currentIndex]
+    this.$watch('currentIndex', 'watchIndexChange')
+    this.$on('changeCurrentIndex', this._changeCurrentIndex)
+  },
+  onShow() {
+    $umeng_stat.resume(this)
+    const currentPlayerId = musicData.currentPlayerId // 获取当前播放歌曲的ID
+    if (currentPlayerId) {
+      // 如果找到当前id,通过ID获取当前索引
+      const currentI = musicData.list.findIndex(
+        item => item.article_id === currentPlayerId
+      )
+      if (currentI > -1) {
+        this.currentIndex = currentI
+      }
+    }
+    this.initAudio()
+    // 如果当前没有音频
+    if (!audio.src || audio.src !== this.playerData.audios[0].audio_src) {
+      // 给背景音频赋值
+      this.setMusic()
+    }
+    this.handlerProgress()
+    // 音频开始播放
+    audio.onplay = () => {
+      this.isplaying = true
+    }
+    // 暂停时触发
+    audio.onpause = () => {
+      this.isplaying = false
+    }
+    audio.ondurationchange = () => {
+      this.isplaying = true
+    }
+    // 音频播放进度控制
+    audio.ontimeupdate = () => {
+      this.isplaying = true
+      this.handlerProgress()
+      // 由于快用还没提供获取播放状态的接口,暂时啊这样解决了。
+    }
+    // 自然播放后，自动切换到下一首
+    audio.onended = () => {
+      this.isplaying = false
+      if (this.currentIndex < Number(this.songList && this.songList.length - 1)) {
+        this.currentIndex = this.currentIndex + 1
+      } else {
+        this.currentIndex = 0
+      }
+      this.setMusic()
+    }
+    // 播放发生错误时的回调事件
+    audio.onerror = (e) => {
+      this.$app.$def.prompt.showToast({
+        message: `音频文件异常！`
+      })
+    }
+  },
+  mode() { // 切换模式
+    this.$app.$def.shareWx()
+  },
+  prev() { // 上一曲
+    if (this.currentIndex === 0) {
+      this.$app.$def.prompt.showToast({
+        message: '已经是第一首！'
+      })
+      return
+    }
+    this.currentIndex = this.currentIndex - 1
+    this.setMusic()
+  },
+  next() {
+    // 下一曲
+    if (this.currentIndex === Number(this.songList && this.songList.length - 1)) {
+      this.$app.$def.prompt.showToast({
+        message: '已经是最后一首!'
+      })
+      return
+    }
+    this.currentIndex = this.currentIndex + 1
+    this.setMusic()
+  },
+  sliderChange(e) {
+    // 快应用只有end没有ing事件,且改变value也会触发Change事件
+    const value = e.progress - audio.currentTime
+    // 相差三秒则判定为拖动进度，同时反应到原生audio组件上,如果没有这个条件的话会一卡一卡的。
+    if (value > 1 || value < -1) {
+      audio.currentTime = e.progress
+    }
+  },
+  close() {
+    // 歌单关闭
+    this.songListVisible = false
+  },
+  watchIndexChange(newV, oldV) { // 当前playerData
+    this.playerData = this.songList[newV]
+    musicData.currentIndex = newV
+    console.info(`监听数据变化：`, newV, oldV)
+  },
+  _changeCurrentIndex(options) { // 选择歌曲
+    let index = options.detail
+    this.currentIndex = index
+    this.setMusic()
+  },
+  handlerProgress() { // 设置进度条
+    this.currentTime = audio.currentTime
+    this.formatCurrentTime = util.formatSeconds(audio.currentTime || 0)
+  },
+  initAudio() {
+    this.duration = this.playerData.audios[0].duration
+    this.formatDuration = util.formatSeconds(this.playerData.audios[0].duration)
+    this.$page.setTitleBar({ text: this.playerData.title })
+  },
+  playMusic() { // 播放器开关
+    this.isplaying = !this.isplaying
+    if (this.isplaying) {
+      audio.play()
+    } else {
+      audio.pause()
+    }
+  },
+  setMusic() {
+    // 设置背景音乐数据
+    // audio.notificationVisible = false
+    audio.src = this.playerData.audios[0].audio_src
+    audio.currentTime = 0
+    this.currentTime = 0
+    audio.play()
+    // 自动播放
+    // audio.autoplay = true
+    musicData.currentPlayerId = this.playerData.article_id
+    this.initAudio()
+  },
+  handlerList() {
+    // 打开歌单
+    this.songListVisible = true
+  },
+  onHide() { // 页面隐藏移除事件,避免不必要的消耗
+    $umeng_stat.pause(this)
+    this.backstagePlay()
+    this.unbind()
+  },
+  onDestroy() { // 页面卸载移除事件,避免不必要的消耗
+    this.backstagePlay()
+    this.unbind()
+  },
+  backstagePlay() { // 自然播放后，自动切换到下一首
+    audio.onended = () => {
+      const list = musicData.list
+      if (musicData.currentIndex < Number(list.length)) {
+        musicData.currentIndex = musicData.currentIndex + 1
+      } else {
+        musicData.currentIndex = 0
+      }
+      musicData.currentPlayerId = list[musicData.currentIndex].article_id
+      audio.src = list[musicData.currentIndex].audios[0].audio_src
+      audio.play()
+    }
+  },
+  unbind() {
+    audio.onplay = null
+    audio.onpause = null
+    audio.ontimeupdate = null
+  },
+  onMenuPress() { // 点击右上角按钮
+    this.$app.$def.showMenu()
+  }
+}
+</script>
+<style lang="less">
+@import '../../common/styles/index.less';
+.play_page {
+  stack {
+    height: 100%;
+    flex-direction: column;
+  }
+}
+.container_bg {
+  height: 100%;
+  flex-direction: column;
+  .container_box {
+    height: 100%;
+    flex-direction: column;
+    .img_wrap {
+      height: 100%;
+      width: 100%;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: 50%;
+      transform: scale(1.5);
+    }
+    .bg_color {
+      height: 100%;
+      width: 100%;
+      background: linear-gradient(rgb(32, 178, 170), rgba(255, 255, 255, 0.9));
+    }
+  }
+}
+.cd_container {
+  height: 100%;
+  flex-direction: column;
+  .cd_box {
+    height: 100%;
+    flex-direction: column;
+    align-items: center;
+    .turn_container {
+      // height: 100%;
+      // width: 386px;
+      // align-items: center;
+      // flex-direction: column;
+      .turn {
+        width: 230px;
+        height: 345px;
+        margin: -43px 0 0 156px;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        transform-origin: 40px 40px;
+        transform: rotate(-20deg);
+      }
+      .start_turn {
+        transform: rotate(0deg);
+      }
+    }
+    .coverImgbox {
+      margin-top: 150px;
+      width: 100%;
+      height: 592px;
+      align-items: center;
+      .coverbgImg {
+        width: 592px;
+        height: 592px;
+        border-width: 1px;
+        border-color: rgba(0, 0, 0, 0);
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+      }
+      .songcoverImg {
+        margin-top: 112px;
+        width: 368px;
+        height: 368px;
+        border-radius: 184px;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+      }
+      .icon-play {
+        width: 592px;
+        height: 592px;
+        justify-content: center;
+        align-items: center;
+        image {
+          width: 100px;
+          height: 100px;
+        }
+      }
+    }
+    .musicisplay {
+      animation-name: rotate;
+      animation-duration: 15000ms;
+      animation-iteration-count: infinite;
+      animation-timing-function: linear;
+      animation-fill-mode: forwards;
+    }
+  }
+}
+.play_minbar {
+  position: fixed;
+  right: 0;
+  left: 0;
+  bottom: 50px;
+  flex-direction: column;
+  .progress-wrapper {
+    width: 100%;
+    padding: 0 50px;
+    justify-content: space-between;
+    align-items: center;
+    .progress {
+      flex: 1;
+    }
+    text {
+      color: rgba(32, 178, 170, 0.8);
+      font-size: 20px;
+    }
+  }
+  .operators {
+    display: flex;
+    align-items: center;
+    height: 100px;
+    .icon {
+      flex: 1;
+      justify-content: center;
+      align-items: center;
+      height: 100px;
+      image {
+        height: 50px;
+      }
+    }
+    .play {
+      image {
+        height: 100px;
+      }
+    }
+  }
+}
+</style>

@@ -1,0 +1,63 @@
+<template>
+  <div class="nav-box">
+    <div class="nav">
+      <div class="nav-lists">
+        <block for="item in data">
+          <div class="item" onclick="bindViewTap(item)">
+            <image class="item-cion" src="{{item.image}}" />>
+            <text if="{{item.title}}">{{item.title}}</text>
+          </div>
+        </block>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+export default {
+  props: {
+    data: {
+      type: Array,
+      default: []
+    }
+  },
+  data() {
+    return {
+    }
+  },
+  onInit() {
+  },
+  bindViewTap(option) {
+    this.$dispatch('bindViewTap', option)
+  }
+}
+</script>
+<style lang="less">
+@import '../../common/styles/index.less';
+.nav-box {
+  width: 750px;
+  height: 186px;
+  background-image: url('/common/image/nav_bg.png');
+  background-size: cover;
+  padding: 6px 28px 0 28px;
+  .nav {
+    padding: 20px 0 15px 0;
+    // flex-flow: wrap;
+    .item {
+      width: 25%;
+      display: flex;
+      margin: 0px 0;
+      flex-direction: column;
+      align-items: center;
+      .item-cion {
+        width: 80px;
+        height: 80px;
+      }
+      text {
+        margin-top: 16px;
+        color: @color-text;
+        font-size: @font-size-medium;
+      }
+    }
+  }
+}
+</style>

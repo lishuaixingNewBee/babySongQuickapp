@@ -1,0 +1,261 @@
+<import name="quist-overlay" src="../mask/index.ux"></import>
+<template>
+  <quist-overlay visible="{{visible}}" @qui-overlay-click="overlayClick" mask-closable="{{maskClosable}}">
+    <div class="quist-drawer quist-drawer-{{placement}}" show="{{show}}">
+      <div class="quist-drawer-content {{animationClass}}" style="{{contentStyle}}">
+        <slot></slot>
+      </div>
+    </div>
+  </quist-overlay>
+</template>
+<script>
+  export default {
+    props: {
+      maskClosable: {
+        type: Boolean,
+        default: true
+      },
+      visible: {
+        type: Boolean,
+        default: false
+      },
+      placement: {
+        type: String,
+        default: 'bottom'
+      }
+    },
+    data() {
+      return {
+        show: this.visible,
+        contentStyle: {},
+        animationClass: ''
+      }
+    },
+    onInit() {
+      this.setDefault()
+      this.setContentStyle()
+      this.toggleVisible(this.visible)
+    },
+    setDefault() {
+      this.$watch('visible', 'toggleVisible')
+    },
+    toggleVisible(visible) {
+      this.timeoutId && clearTimeout(this.timeoutId)
+      if (visible) {
+        this.show = true
+        this.animationClass = `${this.placement}drawerenter`
+      } else {
+        this.animationClass = `${this.placement}drawerleave`
+        this.timeoutId = setTimeout(() => {
+          this.show = false
+        }, 200)
+      }
+    },
+    setContentStyle() {
+      if (this.placement === 'bottom' || this.placement === 'top') {
+        this.contentStyle = {
+          width: '750px',
+          height: 'auto'
+        }
+      } else {
+        this.contentStyle = {
+          width: 'auto',
+          height: '100%'
+        }
+      }
+    },
+    overlayClick() {
+      this.$emit('onClose')
+    }
+  }
+</script>
+<style lang="less">
+@css-prefix: quist;
+@drawer-prefix: ~"@{css-prefix}-drawer";
+.bottomdrawerenter {
+	animation-name: bottomdrawerenter;
+	animation-duration: 400ms;
+	animation-timing-function: ease-in;
+}
+
+.bottomdrawerleave {
+	animation-name: bottomdrawerleave;
+	animation-duration: 300ms;
+	animation-timing-function: ease-in;
+}
+
+@keyframes bottomdrawerenter {
+	0% {
+		height: 0;
+		transform: translateY(100%);
+	}
+
+	100% {
+		height: 100%;
+		transform: translateY(0);
+	}
+}
+
+@keyframes bottomdrawerleave {
+	0% {
+		height: 100%;
+		transform: translateY(0);
+	}
+
+	100% {
+		height: 0;
+		transform: translateY(100%);
+	}
+}
+
+.topdrawerenter {
+	animation-name: topdrawerenter;
+	animation-duration: 400ms;
+	animation-timing-function: ease-in;
+}
+
+.topdrawerleave {
+	animation-name: topdrawerleave;
+	animation-duration: 300ms;
+	animation-timing-function: ease-in;
+}
+
+@keyframes topdrawerenter {
+	0% {
+		height: 0;
+		transform: translateY(-100%);
+	}
+
+	100% {
+		height: 100%;
+		transform: translateY(0);
+	}
+}
+
+@keyframes topdrawerleave {
+	0% {
+		height: 100%;
+		transform: translateY(0);
+	}
+
+	100% {
+		height: 0;
+		transform: translateY(-100%);
+	}
+}
+
+.rightdrawerenter {
+	animation-name: rightdrawerenter;
+	animation-duration: 400ms;
+	animation-timing-function: ease-in;
+
+}
+
+.rightdrawerleave {
+	animation-name: rightdrawerleave;
+	animation-duration: 300ms;
+	animation-timing-function: ease-in;
+}
+
+@keyframes rightdrawerenter {
+	0% {
+		width: 0;
+		transform: translateX(100%);
+	}
+
+	100% {
+		width: 100%;
+		transform: translateX(0);
+	}
+}
+
+@keyframes rightdrawerleave {
+	0% {
+		width: 100%;
+		transform: translateX(0);
+	}
+
+	100% {
+		width: 0;
+		transform: translateX(100%);
+	}
+}
+
+.leftdrawerenter {
+	animation-name: leftdrawerenter;
+	animation-duration: 400ms;
+	animation-timing-function: ease-in;
+}
+
+.leftdrawerleave {
+	animation-name: leftdrawerleave;
+	animation-duration: 300ms;
+	animation-timing-function: ease-in;
+}
+
+@keyframes leftdrawerenter {
+	0% {
+		width: 0;
+		transform: translateX(-100%);
+	}
+
+	100% {
+		width: 100%;
+		transform: translateX(0);
+	}
+}
+
+@keyframes leftdrawerleave {
+	0% {
+		width: 100%;
+		transform: translateX(0);
+	}
+
+	100% {
+		width: 0;
+		transform: translateX(-100%);
+	}
+}
+
+
+.@{drawer-prefix} {
+	position: fixed;
+
+	&-top {
+		top: 0;
+		left: 0;
+		right: 0;
+		flex-direction: column;
+		justify-content: flex-end;
+	}
+
+	&-right {
+		top: 0;
+		bottom: 0;
+		right: 0;
+		flex-direction: row;
+	}
+
+	&-bottom {
+		bottom: 0;
+		left: 0;
+		right: 0;
+		flex-direction: column;
+	}
+
+	&-left {
+		top: 0;
+		bottom: 0;
+		left: 0;
+		flex-direction: row;
+		justify-content: flex-end;
+	}
+
+	&-content {
+		flex-shrink: 0;
+		flex-direction: column;
+	}
+
+}
+
+</style>

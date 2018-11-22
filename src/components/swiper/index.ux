@@ -1,0 +1,71 @@
+<template>
+  <div class="swiper-container">
+    <stack>
+      <swiper class="swiper" autoplay="true" indicator="false" interval="2000" loop="true" onchange="swiperChange">
+        <block for="(index, item) in data">
+          <image class="wrap-img" src="{{item.image}}" onclick="bindViewTap(item)" />
+        </block>
+      </swiper>
+      <div class="dots">
+        <block for="(index, item) in data">
+          <div class="dot {{index === swiperCurrent ? 'active' : ''}}"></div>
+        </block>
+      </div>
+    </stack>
+  </div>
+</template>
+<script>
+export default {
+  props: {
+    data: {
+      type: Array,
+      default: []
+    }
+  },
+  data() {
+    return {
+      swiperCurrent: 0
+    }
+  },
+  onInit() {
+  },
+  bindViewTap(option) {
+    this.$dispatch('bindViewTap', option)
+  },
+  swiperChange(e) {
+    this.swiperCurrent = e.index
+  }
+}
+</script>
+<style lang="less">
+@import '../../common/styles/index.less';
+.swiper-container {
+  .swiper {
+    height: 380px;
+    .wrap-img {
+      resize-mode: cover;
+      height: 380px;
+    }
+  }
+  .dots {
+    align-self: flex-end;
+    flex: 1;
+    justify-content: center;
+    margin-bottom: 54px;
+    transform: translateX(1px);
+    text-align: center;
+    .dot {
+      margin: 0 4px;
+      width: 16px;
+      height: 16px;
+      border-radius: 8px;
+      background-color: @color-text-l;
+    }
+    .active {
+      width: 40px;
+      border-radius: 10px;
+      background-color: @color-text-ll;
+    }
+  }
+}
+</style>

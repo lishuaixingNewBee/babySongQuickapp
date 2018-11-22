@@ -1,0 +1,49 @@
+<script>
+/* 应用级别的配置，供所有页面公用 */
+import audio from '@system.audio' // 音频接口
+import prompt from '@system.prompt' // 弹窗
+import router from '@system.router' // 路由
+import webview from '@system.webview' // 网页
+import storage from '@system.storage' // 本地存储
+import network from '@system.network' // 获取网络状态
+import './common/js/es6plus' /* 一定放在最前面，不难后面要使用async，await会报错 */
+import './common/js/http' /* 引入请求 */
+import './common/js/umenganalysis.es.min';   //友盟统计
+import util from './util'
+export default {
+  musicData: {
+    list: [],
+    album_id: '',
+    currentPlayerId: '',
+    currentIndex: 0
+  },
+  globalPlay: false, // 是否允许播放
+  appConfig: { // 配置文件
+    showMenu: ['保存桌面', '取消']
+  },
+  onCreate() {
+    $umeng_stat.init(this);   //在onCreate函数中加入该行代码，必须添加！！！
+    storage.get({ // 获取缓存中配置文件
+      key: 'appConfig',
+      success: (data) => {
+        if (data) {
+          const appConfig = JSON.parse(data)
+          this.$def.appConfig = appConfig
+        }
+      }
+    })
+  },
+  showMenu: util.showMenu,
+  download: util.download,
+  shareWx: util.shareWx,
+  createShortcut: util.createShortcut,
+  audioShow: util.audioShow, // 音频监听
+  audioHide: util.audioHide, // 取消监听
+  audio,
+  router,
+  storage,
+  webview,
+  network,
+  prompt
+}
+</script>

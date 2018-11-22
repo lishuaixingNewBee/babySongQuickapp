@@ -1,0 +1,120 @@
+{
+  "package": "com.kidplay.lite.xbeg",
+  "name": "熊宝儿歌故事",
+  "versionName": "1.0.3",
+  "versionCode": "103",
+  "minPlatformVersion": "101",
+  "icon": "/common/image/logo.png",
+  "features": [
+    {
+      "name": "system.fetch"
+    },
+    {
+      "name": "system.device"
+    },
+    {
+      "name": "system.package"
+    },
+    {
+      "name": "system.webview"
+    },
+    {
+      "name": "system.network"
+    },
+    {
+      "name": "system.notification"
+    },
+    {
+      "name": "system.prompt"
+    },
+    {
+      "name": "system.router"
+    },
+    {
+      "name": "system.share"
+    },
+    {
+      "name": "system.audio"
+    },
+    {
+      "name": "system.storage"
+    },
+    {
+      "name": "system.shortcut"
+    }
+  ],
+  "permissions": [
+    {
+      "origin": "*"
+    }
+  ],
+  "config": {
+    "logLevel": "debug",
+    "data": {
+      "umeng_appkey": "5beb87dbf1f55621d50003b3"
+    },
+    "debug": false
+  },
+  "router": {
+    "entry": "pages/home",
+    "pages": {
+      "pages/home": {
+        "component": "index"
+      },
+      "pages/card/list": {
+        "component": "index"
+      },
+      "pages/album/video": {
+        "component": "index"
+      },
+      "pages/album/audio": {
+        "component": "index"
+      },
+      "pages/play": {
+        "component": "index"
+      }
+    }
+  },
+  "display": {
+    "titleBarBackgroundColor": "#f2f2f2",
+    "titleBarTextColor": "#414141",
+    "menu": false,
+    "pages": {
+      "pages/home": {
+        "titleBarText": "熊宝儿歌故事",
+        "menu": true,
+        "titleBar": true,
+        "titleBarBackgroundColor": "#ffffff",
+        "titleBarTextColor": "#414141"
+      },
+      "pages/card/list": {
+        "titleBarText": "列表加载中...",
+        "menu": true,
+        "titleBar": true,
+        "titleBarBackgroundColor": "#ffffff",
+        "titleBarTextColor": "#414141"
+      },
+      "pages/album/video": {
+        "titleBarText": "视频加载中...",
+        "menu": true,
+        "titleBar": true,
+        "titleBarBackgroundColor": "#ffffff",
+        "titleBarTextColor": "#414141"
+      },
+      "pages/album/audio": {
+        "titleBarText": "列表加载中...",
+        "menu": true,
+        "titleBar": true,
+        "titleBarBackgroundColor": "#20B2AA",
+        "titleBarTextColor": "#ffffff"
+      },
+      "pages/play": {
+        "titleBarText": "音乐加载中...",
+        "menu": true,
+        "titleBar": true,
+        "titleBarBackgroundColor": "#20B2AA",
+        "titleBarTextColor": "#ffffff"
+      }
+    }
+  }
+}

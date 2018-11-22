@@ -1,0 +1,68 @@
+<template>
+    <block>
+        <list-item type="loadMore" class="load-more">
+            <div class="load-more-loading" if="{{hasMore}}">
+                <progress type="circular"></progress>
+                <text>玩命加载中...</text>
+            </div>
+            <div class="load-nomore" elif="{{!hasMore}}">
+                <div class="line"></div>
+                <div class="content">
+                    <image src='/common/image/nomore.png'></image>
+                    <text>汪～木有了！</text>
+                </div>
+                <div class="line"></div>
+            </div>
+        </list-item>
+    </block>
+</template>
+<script>
+export default {
+  props: {
+    hasMore: {
+      type: Boolean,
+      default: true
+    }
+  },
+  data() {
+    return {}
+  }
+}
+</script>
+<style lang="less">
+.load-more {
+  height: 60px;
+  justify-content: center;
+  align-items: center;
+  text {
+    height: 30px;
+    font-size: 25px;
+    line-height: 30px;
+    margin-left: 8px;
+    color: #495060;
+  }
+  .load-more-loading {
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+  }
+  .load-nomore {
+    width: 80%;
+    justify-content: center;
+    align-items: center;
+    .content {
+      justify-content: center;
+      align-items: center;
+      .image {
+        height: 30px;
+      }
+      .line {
+        height: 1px;
+        background-color: #dddee1;
+        flex: 1;
+        margin: 0 10px;
+      }
+    }
+  }
+}
+</style>

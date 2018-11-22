@@ -1,0 +1,154 @@
+<template>
+    <!-- template里只能有一个根节点 -->
+    <div class="list_page page_container">
+        <refresh onrefresh="onPullDownRefresh" refreshing="{{isRefresh}}">
+            <list class="list_wrap" onscrollbottom="loadMoreData">
+                <block for="(index, item) in list">
+                    <!-- 大图 -->
+                    <list-item type="{{index}}" if="{{item.style_type === 1 || item.style_type === 3 || item.style_type === 5}}" class="card s3" onclick="bindViewTap(item)">
+                        <div class="card_wrap">
+                            <div class="content">
+                                <text class="title">{{item.title}}</text>
+                                <div class="desc">
+                                    <image if="index < 5" class="icon" src="http://c2.h54hterh.top/manage/thumbnail/9fd78f08b5c64a727346ae9ff4390309.png"></image>
+                                    <text>{{item.source_name}}</text>
+                                </div>
+                            </div>
+                            <div class="wrap_image">
+                                <image class="image" src="{{item.thumbnails[0].url}}"></image>
+                            </div>
+                        </div>
+                    </list-item>
+                </block>
+                <load-more has-more="{{hasMore}}"></load-more>
+            </list>
+        </refresh>
+    </div>
+</template>
+<!-- load-more组件 -->
+<import name="load-more" src="../../components/load-more/index.ux"></import>
+<script>
+import { getNewsList } from '../../api/news.js' // 首页数据
+export default {
+    protected: {
+        cid: ''
+    },
+    data: {
+        isLoading: false,
+        hasMore: true,
+        page_token: 1,
+        isRefresh: false,
+        list: [],
+    },
+    onReady() {
+        this.getList('down')
+    },
+    async getList(type) {
+        if (type === 'down') { // 下拉操作翻页置为1
+            this.page_token = 1
+        }
+        this.isLoading = true
+        await getNewsList(this.cid, this.page_token).then((res) => {
+            this.isLoading = false
+            const list = res.data.articles
+            this.page_token++ // 开启翻页++
+            if (list.length) {
+                this.hasMore = true
+                type === 'down' ? this.list = list : this.list = this.list.concat(list)
+            } else {
+                this.hasMore = false
+            }
+        }).catch(res => {
+            this.isLoading = false
+            this.isRefresh = false
+            this.$app.$def.prompt.showToast({
+                message: '服务器异常,一会再试试！'
+            })
+        })
+    },
+    bindViewTap(option) {
+        this.$app.$def.webview.loadUrl({
+            url: option.url
+        })
+    },
+    onPullDownRefresh(e) {
+        this.isRefresh = true
+        this.getList('down').then(() => {
+            this.isRefresh = false
+            this.$app.$def.prompt.showToast({
+                message: '数据更新成功'
+            })
+        })
+    },
+    loadMoreData() {
+        if (this.isLoading && !this.hasMore) {
+            // 防止数据还没回来再次或者已经没有数据触发加载
+            return
+        }
+        this.getList('up')
+    },
+    onMenuPress() { // 点击右上角按钮
+        this.$app.$def.showMenu()
+    }
+}
+</script>
+<style lang="less">
+@import '../../common/styles/index.less';
+.list_page {
+  background-color: @color-background-l;
+}
+.list_wrap {
+  flex-direction: column;
+  .card {
+    margin: 30px 20px 0 20px;
+    .card_wrap {
+      flex-direction: column;
+    }
+  }
+  .s3 {
+    .card_wrap {
+      width: 100%;
+      flex-direction: row;
+      .wrap_image {
+        width: 220px;
+        height: 176px;
+        background-color: rgb(74, 71, 70);
+        .image {
+          width: 220px;
+          height: 176px;
+          resize-mode: cover;
+        }
+      }
+      .content {
+        height: 176px;
+        flex-direction: column;
+        flex: 1;
+        background-color: #ffffff;
+        padding: 10px 20px;
+        justify-content: space-between;
+        .title {
+          height: 80px;
+          line-height: 40px;
+          font-size: 30px;
+          color: #333333;
+          .no-wrap(2);
+        }
+      }
+      .desc {
+        align-items: center;
+        height: 28px;
+        .icon {
+          height: 28px;
+          margin-right: 10px;
+        }
+        text {
+          height: 28px;
+          line-height: 28px;
+          font-size: 24px;
+          color: #999999;
+        }
+      }
+    }
+  }
+}
+</style>

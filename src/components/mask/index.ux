@@ -1,0 +1,89 @@
+<template>
+  <div class="quist-overlay">
+    <div class="quist-overlay-mask {{className}}" style="background-color: {{background}}" show="{{show}}" @click="overlayClick">
+      <slot></slot>
+    </div>
+  </div>
+</template>
+<script>
+  export default {
+    props: {
+      maskClosable: {
+        type: Boolean,
+        default: false
+      },
+      visible: {
+        type: Boolean,
+        default: false
+      },
+      background: {
+        type: String,
+        default: 'rgba(0, 0, 0, 0.6)'
+      }
+    },
+    data: {
+      show: false,
+      className: ''
+    },
+    onInit() {
+      this.$watch('visible', 'updateVisible')
+      this.updateVisible()
+    },
+    updateVisible() {
+      this.timeoutId && clearTimeout(this.timeoutId) //防止更改太快
+      if (this.visible) {
+        this.show = true
+        this.className = 'quist-overlay-enter'
+      } else {
+        this.className = 'quist-overlay-leave'
+        this.timeoutId = setTimeout(() => {
+          this.show = false
+        }, 200)
+      }
+    },
+    overlayClick() {
+      this.maskClosable ? this.$emit('quiOverlayClick') : ''
+    }
+  }
+</script>
+<style lang="less">
+@css-prefix: quist;
+@overlay-prefix: ~"@{css-prefix}-overlay";
+@keyframes quistOverlayEnter {
+	0% {
+		opacity: 0;
+	}
+
+	100% {
+		opacity: 1;
+	}
+}
+@keyframes quistOverlayLeave {
+	0% {
+		opacity: 1;
+	}
+
+	100% {
+		opacity: 0;
+	}
+}
+.@{overlay-prefix} {
+	&-enter {
+		animation-name: quistOverlayEnter;
+	}
+	&-leave {
+		animation-name: quistOverlayLeave;
+	}
+	&-mask {
+		position: fixed;
+		left: 0;
+		right: 0;
+		top: 0;
+		bottom: 0;
+		justify-content: center;
+		align-items: center;
+		animation-duration: 200ms;
+		animation-fill-mode: forwards;
+	}
+}
+</style>

@@ -1,0 +1,83 @@
+/* 顶级注释: list-item组件 dom结构不一致时,一定要给 type="***" 命名不一样的值，否则会闪退 */
+<template>
+  <block>
+    <block for="(index, item) in list">
+      <!-- 轮播图 -->
+      <list-item type="swiper" if="{{item.type_id === cardType.SLIDER}}">
+        <swiper-view data="{{item.items}}"></swiper-view>
+      </list-item>
+      <!-- nav -->
+      <list-item type="nav" class="nav_container" if="{{item.type_id === cardType.NAV}}">
+        <nav-view data="{{item.items}}"></nav-view>
+      </list-item>
+      <!-- 三图正方形 -->
+      <list-item type="cardEighteen" class="card_container {{index === (list.length-1) ? 'none_border' : ''}}" if="{{item.type_id === cardType.SQUARE_THREE }}">
+        <card-eighteen data="{{item}}"></card-eighteen>
+      </list-item>
+      <!-- 二图长方形  -->
+      <list-item type="cardSixteen" class="card_container {{index === (list.length-1) ? 'none_border' : ''}}" if="{{item.type_id === cardType.RECTANGLE_TWO}}">
+        <card-sixteen data="{{item}}"></card-sixteen>
+      </list-item>
+      <!-- 二图正方形  -->
+      <list-item type="cardThirtythree" class="card_container {{index === (list.length-1) ? 'none_border' : ''}}" if="{{item.type_id === cardType.SQUARE_TW}}">
+        <card-thirtythree data="{{item}}"></card-thirtythree>
+      </list-item>
+    </block>
+  </block>
+</template>
+<!-- 轮播图 -->
+<import name="swiper-view" src="../swiper/index.ux"></import>
+<!-- nav -->
+<import name="nav-view" src="../nav/index.ux"></import>
+<!-- 二图长方形  -->
+<import name="card-sixteen" src="./s16.ux"></import>
+ <!-- 三图正方形 -->
+<import name="card-eighteen" src="./s18.ux"></import>
+<!-- 二图正方形  -->
+<import name="card-thirtythree" src="./s33.ux"></import>
+<script>
+import cardType from '../../common/js/cardType' // 卡片类型
+import getUrl from '../../common/js/getUrl' // url类型
+export default {
+  props: {
+    list: {
+      type: Array,
+      default: []
+    }
+  },
+  data() {
+    return {
+      cardType
+    }
+  },
+  onInit() {
+    this.$on('bindViewTap', this._bindViewTap)
+  },
+  _bindViewTap(option) {
+    const data = option.detail
+    if (!data.target) {
+      return
+    }
+    const relativePath = getUrl.relativePath(data.target)
+    const params = Object.assign({}, { title: data.title }, getUrl.paramsFromURL(data.target))
+    // 跳转到应用内的某个页面，router用法详见：文档->接口->页面路由
+    this.$app.$def.router.push({
+      uri: `/pages${relativePath}`,
+      params
+    })
+  }
+}
+</script>
+<style lang="less">
+@import '../../common/styles/index.less';
+.nav_container {
+  margin-top: -50px;
+}
+.card_container {
+  border-bottom-width: 20px;
+  border-color: #f4f4f4;
+}
+.none_border {
+  border-bottom-width: 0px;
+}
+</style>

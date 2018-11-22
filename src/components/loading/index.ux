@@ -1,0 +1,41 @@
+<template>
+    <div class="wrap_loading">
+      <div class="content">
+        <image src="http://c2.h54hterh.top/manage/thumbnail/7d4d21c0f604ccc7f984c4950265cc03.gif"></image>
+      </div>
+    </div>
+</template>
+<script>
+export default {
+  props: {
+  },
+  data() {
+    return {}
+  },
+  onInit() {
+  }
+}
+</script>
+<style lang="less">
+.wrap_loading {
+  position: fixed;
+  top:0;
+  bottom: 0;
+  right:0;
+  left: 0;
+  justify-content: center;
+  align-items: center;
+  .content {
+    flex-direction: column;
+    image {
+      width: 250px;
+      // animation-name: rotate;
+      // animation-duration: 1500ms;
+      // animation-timing-function: linear;
+      // animation-delay: 0ms;
+      // animation-iteration-count: infinite;
+      // animation-fill-mode: none;
+    }
+  }
+}
+</style>

@@ -1,0 +1,217 @@
+<template>
+  <!-- template里只能有一个根节点 -->
+  <div class="list_page page_container">
+    <refresh onrefresh="onPullDownRefresh" refreshing="{{isRefresh}}">
+      <list if="{{list.length}}" class="list_wrap" onscrollbottom="loadMoreData">
+        <block for="(index, item) in list">
+          <list-item type="product" class="content-item" onclick="bindViewTap(item.album)">
+            <div class="item_container {{index === 0 ? 'first_item' : ''}}">
+              <div class="item">
+                <stack class="wrap_img {{item.album.type === 'video' ? 'video_img' : '' }}">
+                  <image class="img" src="{{item.album.thumbnail ? item.album.thumbnail : item.album.image}}">
+                  </image>
+                  <div class="count_box">
+                    <image class="icon" src="{{item.album.type === 'video' ? '/common/image/video.svg' : '/common/image/music.svg'}}">
+                    </image>
+                    <div class="{{item.album.type === 'video' ? 'icon-play' : 'icon-music2' }}"></div>
+                    <text class="num">{{item.album.item_count}}{{item.album.type === 'video' ? '集' : '首' }}</text>
+                  </div>
+                </stack>
+                <div class="desc">
+                  <text class="title">
+                    {{item.album.album_name}}
+                  </text>
+                  <text class="text">
+                    {{item.album.description}}
+                  </text>
+                </div>
+              </div>
+            </div>
+          </list-item>
+        </block>
+        <load-more has-more="{{hasMore}}"></load-more>
+      </list>
+    </refresh>
+    <loading-view if="{{!list.length}}"></loading-view>
+    <!-- 播放悬浮 -->
+    <min-play isplaying="{{isplaying}}" if="{{minplayVisible}}"></min-play>
+  </div>
+</template>
+<!-- loading组件 -->
+<import name="loading-view" src="../../../components/loading/index.ux"></import>
+<!-- 播放悬浮 -->
+<import name="min-play" src="../../../components/minplay/index.ux"></import>
+<!-- load-more组件 -->
+<import name="load-more" src="../../../components/load-more/index.ux"></import>
+<script>
+import { getData } from '../../../api/list' // 首页数据
+export default {
+  protected: {
+    title: '',
+    label: ''
+  },
+  private: {
+    isplaying: true, // 是否处于播放状态
+    minplayVisible: false, // 是否展示minPlay
+    isLoading: false,
+    hasMore: false,
+    page_size: 15,
+    page_no: 1,
+    isRefresh: false,
+    list: [],
+  },
+  onInit() {
+    this.audio = this.$app.$def.audio // 获取音频组件
+    this.$page.setTitleBar({ text: decodeURIComponent(this.title) })
+    this.getList('down')
+  },
+  onShow() {
+    $umeng_stat.resume(this)
+    this.$app.$def.audioShow.call(this)
+  },
+  onHide() {
+    this.$app.$def.audioHide.call(this)
+    $umeng_stat.pause(this)
+  },
+  onDestroy() {
+    this.$app.$def.audioHide.call(this)
+  },
+  async getList(type) {
+    if (type === 'down') { // 下拉操作翻页置为1
+      this.page_no = 1
+    }
+    this.isLoading = true
+    await getData(this.label, this.page_no, this.page_size).then((res) => {
+      this.isLoading = false
+      this.page_no++ // 开启翻页++
+      if (res.data.length) {
+        this.hasMore = true
+        type === 'down' ? this.list = res.data : this.list = this.list.concat(res.data)
+      } else {
+        this.hasMore = false
+      }
+    }).catch(res => {
+      this.isLoading = false
+      this.isRefresh = false
+      this.$app.$def.prompt.showToast({
+        message: '服务器异常,一会再试试！'
+      })
+    })
+  },
+  bindViewTap(option) {
+    let uri = ''
+    if (option.type === 'video') {
+      uri = `/pages/album/video`
+    } else if (option.type === 'audio') {
+      uri = `/pages/album/audio`
+    }
+    this.$app.$def.router.push({
+      uri,
+      params: {
+        album_id: option.album_id,
+        title: option.album_name,
+      }
+    })
+
+  },
+  onPullDownRefresh(e) {
+    this.isRefresh = true
+    this.getList('down').then(() => {
+      this.isRefresh = false
+      this.$app.$def.prompt.showToast({
+        message: '数据更新成功'
+      })
+    })
+  },
+  loadMoreData() {
+    if (this.isLoading && !this.hasMore) {
+      // 防止数据还没回来再次或者已经没有数据触发加载
+      return
+    }
+    this.getList('up')
+  },
+  onMenuPress() { // 点击右上角按钮
+    this.$app.$def.showMenu()
+  }
+}
+</script>
+<style lang="less">
+@import '../../../common/styles/index.less';
+.list_page {
+  background-color: @color-background-l;
+}
+.list_wrap {
+  .item_container {
+    flex: 1;
+    height: 196px;
+    padding: 4px 30px 12px 30px;
+    margin: 4px 0 0px 0;
+    background-image: url('../../../common/image/list-item-bg.png');
+  }
+  .item {
+    flex: 1;
+    background-color: @color-background;
+    background-size: cover;
+    // margin: 20px 30px 0px;
+    padding: 20px;
+    // box-shadow: 0px 1px 8px 0px rgba(186, 186, 186, 0.2);
+    .wrap_img {
+      width: 140px;
+      height: 140px;
+      margin-right: 20px;
+      .img {
+        width: 100%;
+        height: 100%;
+        background-color: @color-background-l;
+        background-size: cover;
+      }
+      .count_box {
+        height: 30px;
+        margin-top: 10px;
+        padding: 0 6px 0 10px;
+        border-top-right-radius: 15px;
+        border-bottom-right-radius: 15px;
+        background-color: rgba(000, 000, 000, 0.5);
+        font-size: 20px;
+        justify-content: center;
+        align-items: center;
+        .icon {
+          background-size: cover;
+          height: 20px;
+          width: 20px;
+        }
+        .num {
+          color: #ffffff;
+          font-size: 20px;
+          margin-left: 8px;
+        }
+      }
+    }
+    .video_img {
+      width: 210px;
+    }
+    .desc {
+      flex: 1;
+      flex-direction: column;
+      justify-content: center;
+      .title {
+        height: 40px;
+        line-height: 40px;
+        margin-bottom: 10px;
+        font-size: @font-size-medium;
+        .no-wrap();
+      }
+      .text {
+        height: 40px;
+        line-height: 40px;
+        font-size: @font-size-medium;
+        color: @color-text-d;
+        .no-wrap();
+      }
+    }
+  }
+  .first_item {
+    margin-top: 12px;
+  }
+}
+</style>

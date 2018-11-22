@@ -1,0 +1,55 @@
+/* list-item 组件中if 尽量用show替代，防止dom结构发生改变 */
+<template>
+    <div class="card_title">
+        <text class="c_title" onclick="bindViewTap(data)">{{data.title}}</text>
+        <div class="more" if="{{data.target}}" onclick="bindViewTap(data)">
+            <text>更多</text>
+            <image class="icon-more" src="../../common/image/more.svg"></image>
+        </div>
+    </div>
+</template>
+<script>
+export default {
+    props: {
+        data: {
+            type: Object,
+            default: []
+        }
+    },
+    data() {
+        return {}
+    },
+    onInit() {
+    },
+    bindViewTap(option) {
+        this.$dispatch('bindViewTap', option)
+    }
+}
+</script>
+<style lang="less">
+@import '../../common/styles/index.less';
+.card_title {
+  margin: 20px 0 25px 0;
+  justify-content: space-between;
+  .c_title {
+    color: @color-highlight-background;
+    font-size: @font-size-large-x;
+    font-weight: bold;
+    .no-wrap();
+  }
+  .more {
+    height: 60px;
+    align-items: center;
+    text {
+      margin-right: -2px;
+      height: 60px;
+      line-height: 60px;
+      color: @color-text-d;
+      font-size: @font-size-small-s;
+    }
+    .icon-more {
+      width: 30px;
+    }
+  }
+}
+</style>

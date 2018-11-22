@@ -1,0 +1,107 @@
+<template>
+  <!-- template里只能有一个根节点 -->
+  <div class="page_container">
+    <div class="home_content">
+      <div class="item_content" show="{{currentIndex === 0}}">
+        <music-page></music-page>
+      </div>
+      <div class="item_content" show="{{currentIndex === 1}}">
+        <video-page></video-page>
+      </div>
+      <div class="item_content" show="{{currentIndex === 2}}">
+        <news-page news-channels="{{newsChannels}}"></news-page>
+      </div>
+    </div>
+    <!-- 底部tabs -->
+    <v-tabs current-index="{{currentIndex}}" tab-bar={{tabBar}}></v-tabs>
+    <min-play isplaying="{{isplaying}}" if="{{minplayVisible}}"></min-play>
+  </div>
+</template>
+<!-- 底部tabs -->
+<import name="v-tabs" src="../../components/tab/index.ux"></import>
+<!-- 播放悬浮 -->
+<import name="min-play" src="../../components/minplay/index.ux"></import>
+<!-- 宝宝听 -->
+<import name="music-page" src="../music/index.ux"></import>
+<!-- 宝宝看 -->
+<import name="video-page" src="../video/index.ux"></import>
+<!-- 亲子阅 -->
+<import name="news-page" src="../news/index.ux"></import>
+<script>
+import { appConfig } from '../../api/home' // 首页数据
+export default {
+  // 页面级组件的数据模型，影响传入数据的覆盖机制：private内定义的属性不允许被覆盖
+  private: {
+    isplaying: true, // 是否处于播放状态
+    minplayVisible: false, // 是否展示minPlay
+    tabBar: {},
+    newsChannels: [], // 亲子阅读数据
+    currentIndex: 1 // 当前页面索引
+  },
+  onInit() {
+    this.audio = this.$app.$def.audio // 获取音频组件
+    this.$app.$def.storage.get({ // 获取缓存中配置文件
+      key: 'appConfig',
+      success(data) {
+        if (data) {
+          const appConfig = JSON.parse(data)
+          this.tabBar = appConfig.tab_bar
+          this.newsChannels = appConfig.tab_bar.tabs[2].channels
+        }
+      }
+    })
+    this.fetchData() // 请求配置文件
+    this.$on('changeCurrentIndex', this._changeCurrentIndex)
+  },
+  async fetchData() { // 请求配置文件
+    await appConfig().then((res) => {
+      const appConfig = res.data.app_config
+      // 配置文件写入缓存
+      this.$app.$def.storage.set({
+        key: 'appConfig',
+        value: JSON.stringify(appConfig)
+      })
+      this.tabBar = appConfig.tab_bar
+      // 信息流
+      this.newsChannels = appConfig.tab_bar.tabs[2].channels
+    }).catch(res => {
+      this.$app.$def.prompt.showToast({
+        message: '服务器异常,一会再试试！'
+      })
+    })
+  },
+  onShow() {
+    this.$app.$def.audioShow.call(this)
+    $umeng_stat.resume(this)
+  },
+  onHide() {
+    this.$app.$def.audioHide.call(this)
+    $umeng_stat.pause(this);
+  },
+  onDestroy() {
+    this.$app.$def.audioHide.call(this)
+  },
+  onMenuPress() { // 点击右上角按钮
+    this.$app.$def.showMenu()
+  },
+  _changeCurrentIndex(options) {
+    let index = options.detail
+    this.currentIndex = index
+  }
+}
+</script>
+
+<style lang="less">
+@import '../../common/styles/index.less';
+.page_container {
+  .home_content {
+    flex: 1;
+    flex-direction: column;
+    .item_content {
+      flex-direction: column;
+      padding-bottom: 110px;
+      flex: 1;
+    }
+  }
+}
+</style>

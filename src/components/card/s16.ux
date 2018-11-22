@@ -1,0 +1,85 @@
+<template>
+    <div class="card_wrap">
+        <card-header data="{{data}}"></card-header>
+        <div class="card_lists">
+            <block for="item in data.items">
+                <div class="card_item s16">
+                    <div class="card_box" onclick="bindViewTap(item)">
+                        <image class="wrap_img" src="{{item.thumbnail ? item.thumbnail : item.image}}" />
+                    </div>
+                    <div class="description">
+                        <text class="title">{{item.title}}</text>
+                        <text class="text">{{item.sub_title}}</text>
+                    </div>
+                </div>
+            </block>
+        </div>
+    </div>
+</template>
+<!-- nav -->
+<import name="card-header" src="./card-header.ux"></import>
+<script>
+export default {
+    props: {
+        data: {
+            type: Object,
+            default: {}
+        }
+    },
+    data() {
+        return {}
+    },
+    onInit() {
+    },
+    bindViewTap(option) {
+        this.$dispatch('bindViewTap', option)
+    }
+}
+</script>
+<style lang="less">
+@import '../../common/styles/index.less';
+.card_wrap {
+  margin: 20px 0px 0 0px;
+  padding: 0 20px;
+  flex-direction: column;
+  .card_lists {
+    flex-wrap: wrap;
+    margin-right: -20px;
+  }
+  .s16 {
+    width: 50%;
+    flex-direction: column;
+    .card_box {
+      margin-right: 20px;
+      .wrap_img {
+        width: 100%;
+        height: 206px;
+        border-radius: 13px;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-color:@color-background-l; 
+        background-size: cover;
+      }
+    }
+    .description {
+      flex-direction: column;
+      margin: 15px 0;
+      .title {
+        flex: 1;
+        height: 40px;
+        line-height: 40px;
+        font-size: @font-size-medium;
+        .no-wrap();
+      }
+      .text {
+        flex: 1;
+        height: 40px;
+        line-height: 40px;
+        font-size: @font-size-medium;
+        color: @color-text-d;
+        .no-wrap();
+      }
+    }
+  }
+}
+</style>

@@ -1,0 +1,131 @@
+<template>
+  <drawer-view visible="{{songListVisible}}" @on-close="close" placement="bottom">
+    <div class="list-wrap">
+      <div class="list-header">
+        <div class="left">
+          <image class="icon-music" src="/common/image/music3.svg"></image>
+          <text>播放列表 ( {{songList.length}} )</text>
+        </div>
+      </div>
+      <list class="list-content" id="list">
+        <block for="(index, item) in songList">
+          <list-item type="song" class="item" onclick="goIndex(index)">
+            <image class="icon-voice" src="/common/image/voice.svg" show="{{index == currentIndex}}"></image>
+            <text class="name {{index==currentIndex ? 'playing' : ''}}">{{item.title}}</text>
+          </list-item>
+        </block>
+      </list>
+      <div class="footer" onclick="close">
+        <text>关闭</text>
+      </div>
+    </div>
+  </drawer-view>
+</template>
+<import name="drawer-view" src="../drawer/index.ux"></import>
+<script>
+export default {
+  props: {
+    songListVisible: {
+      type: Boolean,
+      default: false
+    },
+    songList: {
+      type: Array,
+      default() {
+        return []
+      }
+    },
+    currentIndex: {
+      type: Number,
+      default: 0
+    }
+  },
+  onInit() {
+    this.$watch('songListVisible', 'watchPropsChange')
+  },
+  onReady() {
+    // 不用onReady,就需要使用this.$forceUpdate()
+    this.$element('list').scrollTo({ index: this.currentIndex, smooth: true })
+  },
+  watchPropsChange(newV, oldV) {
+    this.$element('list').scrollTo({ index: this.currentIndex, smooth: true })
+  },
+  close() {
+    this.$emit('onClose')
+  },
+  goIndex(index) {
+    this.$dispatch('changeCurrentIndex', index)
+  }
+}
+</script>
+<style lang="less">
+@import '../../common/styles/index.less';
+.list-wrap {
+  flex-direction: column;
+  width: 100%;
+  height: 800px;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  background-color: #ffffff;
+  .list-header {
+    height: 100px;
+    padding: 0 30px;
+    border-bottom-width: 1px;
+    border-color: #f2f2f2;
+    .left {
+      flex-direction: row;
+      align-items: center;
+      height: 100px;
+      color: @color-highlight-background;
+      .icon-music {
+        height: 40px;
+        margin-right: 10px;
+      }
+      text {
+        height: 100px;
+        width: 100%;
+        .no-wrap();
+        font-size: @font-size-large;
+        line-height: 100px;
+      }
+    }
+  }
+  .list-content {
+    flex: 1;
+    .item {
+      flex-direction: row;
+      align-items: center;
+      margin: 0 30px;
+      height: 90px;
+      background-color: @color-background-d;
+      border-bottom-width: 1px;
+      border-color: #f2f2f2;
+      text {
+        height: 90px;
+        line-height: 90px;
+        .no-wrap();
+        color: @color-dialog-background;
+        font-size: @font-size-medium;
+      }
+      .playing {
+        color: #20b2aa;
+      }
+      .icon-voice {
+        height: 35px;
+        margin-right: 10px;
+      }
+    }
+  }
+  .footer {
+    text {
+      width: 100%;
+      height: 92px;
+      font-size: 28px;
+      text-align: center;
+      line-height: 92px;
+      color: rgba(117, 117, 117, 0.5);
+      background-color: #f2f2f2;
+    }
+  }
+}
+</style>

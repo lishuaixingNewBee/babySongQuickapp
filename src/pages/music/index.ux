@@ -1,0 +1,56 @@
+<template>
+  <div class="video-page">
+    <refresh onrefresh="onPullDownRefresh" refreshing="{{isRefresh}}">
+      <list class="list">
+        <card list="{{list}}" if="{{list.length}}"></card>
+      </list>
+      <loading-view if="{{!list.length}}"></loading-view>
+    </refresh>
+  </div>
+</template>
+<!-- 更多卡片 -->
+<import name="card" src="../../components/card/index.ux"></import>
+<!-- loading组件 -->
+<import name="loading-view" src="../../components/loading/index.ux"></import>
+<script>
+import { getMusicList } from '../../api/home' // 首页数据
+export default {
+  props: {
+  },
+  data() {
+    return {
+      isRefresh: false,
+      list: []
+    }
+  },
+  onInit() {
+    this.getList()
+  },
+  async getList() {
+    await getMusicList().then((res) => {
+      this.list = res.data;
+    }).catch(res => {
+      this.isRefresh = false
+      this.$app.$def.prompt.showToast({
+        message: '服务器异常,一会再试试！'
+      })
+    })
+  },
+  onPullDownRefresh(e) {
+    this.isRefresh = true
+    this.getList().then(() => {
+      this.isRefresh = false
+      this.$app.$def.prompt.showToast({
+        message: '数据更新成功'
+      })
+    })
+  }
+}
+</script>
+<style lang="less">
+@import '../../common/styles/index.less';
+.video-page {
+  background-color: @color-background-d;
+  flex-direction: column;
+}
+</style>

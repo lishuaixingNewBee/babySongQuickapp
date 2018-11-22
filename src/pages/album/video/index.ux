@@ -1,0 +1,302 @@
+<template>
+  <div class="video_page page_container">
+    <stack class="video_container">
+      <video if="videoList.length && isPlay" src="{{videoList[currentIndex].video_src}}" onfinish="bindended" poster="{{videoList[currentIndex].poster_url}}" controls="true" autoplay="true">
+      </video>
+      <stack class="mask" if="!isPlay">
+        <image class="bg" src="http://c2.h54hterh.top/manage/thumbnail/01c650ee376e77567f336b3b2ac23f7f.jpeg"></image>
+        <image class="btn" src="http://c2.h54hterh.top/manage/thumbnail/b4f6e786166365f446880811447971bb.png" onclick="play"></image>
+      </stack>
+    </stack>
+    <div class="main">
+      <div class="info">
+        <div class="detail_1">
+          <div class="left">
+            <text class="title">{{album_name}}</text>
+            <div class="c_desc">
+              <text class="classify">动画</text>
+              <text class="source"> / {{source}} / </text>
+              <text class="play_count">{{play_count}}次观看</text>
+            </div>
+          </div>
+          <image class="share xbtn" onclick="share" src="/common/image/wx.svg"></image>
+        </div>
+        <div class="detail_2" if="{{description}}">
+          <text class="detail_title">内容简介</text>
+          <text class="detail_info">{{description}}</text>
+        </div>
+        <div class="episode_container">
+          <text class="title">剧集 ({{currentIndex+1}}/{{videoList.length}})</text>
+          <list class="episode_lists" id="list" onscrollbottom="loadMoreData">
+            <block for="(index, item) in videoList">
+              <list-item type="episode" onclick="tapItem(index)">
+                <stack>
+                  <div class="episode_item">
+                    <image class="wrap_img" src="{{item.poster_url}}"></image>
+                    <text class="text">{{item.title}}</text>
+                  </div>
+                  <div class="bg"></div>
+                  <div class="episode_item {{index === currentIndex ? 'active' : ''}}"></div>
+                </stack>
+              </list-item>
+            </block>
+          </list>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+import { getAlbum } from '../../../api/album' // 专辑
+import util from '../../../common/js/util' // 工具类
+export default {
+  protected: {
+    defaultIndex: '',
+    title: '',
+    album_id: ''
+  },
+  private: {
+    isPlay: false,
+    album_name: '',
+    thumbnail: '',
+    source: '',
+    description: '',
+    play_count: '',
+    currentIndex: 0,
+    videoList: []
+  },
+  onInit() {
+    this.$page.setTitleBar({ text: decodeURIComponent(this.title) })
+    if (this.defaultIndex) { // 是否带参数
+      this.currentIndex = this.defaultIndex
+    }
+    this.getList()
+  },
+  onShow() {
+    $umeng_stat.resume(this)
+  },
+  onHide() {
+    $umeng_stat.pause(this)
+  },
+  play() {
+    if (this.$app.$def.globalPlay) {
+      this.isPlay = true // 允许非wifi下播放
+    } else {
+      this.$app.$def.network.subscribe({
+        callback: (data) => {
+          if (data.type === 'wifi') {
+            this.isPlay = true
+          } else {
+            this.$app.$def.prompt.showDialog({
+              message: '您正在使用手机流量播放，是否继续？',
+              buttons: [
+                {
+                  text: '确认',
+                  color: '#333333'
+                },
+                {
+                  text: '取消',
+                  color: '#989898'
+                }
+              ],
+              success: (data) => {
+                if (data.index === 1) {
+                  return
+                } else {
+                  this.isPlay = true
+                  this.$app.$def.globalPlay = true
+                }
+              }
+            })
+          }
+        }
+      })
+    }
+  },
+  async getList() {
+    await getAlbum(this.album_id).then(res => {
+      const data = res.data
+      this.album_name = data.album_name
+      this.thumbnail = data.thumbnail || data.image
+      this.source = '熊宝儿歌故事'
+      this.description = data.description
+      data.play_count ? (this.play_count = util.numW(data.play_count)) : (this.play_count = util.numW(util.randomNum(5000, 999999)))
+      this.videoList = data.artilces.map((v) => {
+        return {
+          title: v.title,
+          poster_url: v.poster_url,
+          video_src: v.videos[0].video_src
+        }
+      })
+      // 立即执行相应的DOM操作
+      this.$forceUpdate()
+      this.goIndex()
+    }).catch(res => {
+      this.$app.$def.prompt.showToast({
+        message: '网络异常,一会再试试！'
+      })
+    })
+  },
+  bindended() {
+    // 播放完毕自动切换到下一集
+    if (this.currentIndex < this.videoList.length - 1) {
+      this.currentIndex = this.currentIndex + 1
+      this.goIndex()
+    }
+  },
+  tapItem(index) {
+    this.currentIndex = index
+    this.goIndex()
+  },
+  goIndex() {
+    this.$element('list').scrollTo({ index: this.currentIndex, smooth: true })
+  },
+  share() {
+    this.$app.$def.shareWx()
+  },
+  onMenuPress() { // 点击右上角按钮
+    this.$app.$def.showMenu()
+  }
+}
+</script>
+<style lang="less">
+@import '../../../common/styles/index.less';
+.video_page {
+  .video_container {
+    position: fixed;
+    width: 750px;
+    height: 421.95px;
+    .mask {
+      align-items: center;
+      justify-content: center;
+      .bg {
+        width: 100%;
+        height: 100%;
+      }
+      .btn {
+        width: 120px;
+        height: 120px;
+      }
+    }
+    video {
+      width: 100%;
+      height: 100%;
+    }
+  }
+  .main {
+    margin-top: 421.95px;
+    flex-direction: column;
+    .info {
+      flex-direction: column;
+      .detail_1 {
+        flex-direction: row;
+        align-items: center;
+        padding: 20px 25px;
+        border-bottom-width: 20px;
+        border-color: #f4f4f4;
+        .left {
+          flex: 1;
+          flex-direction: column;
+          .title {
+            color: @color-highlight-background;
+            font-size: @font-size-large-x;
+            font-weight: bold;
+          }
+          .c_desc {
+            margin: 5px 0;
+            .classify {
+              color: #f87c0a;
+              font-size: @font-size-medium;
+            }
+            .source {
+              color: @color-text-d;
+              font-size: @font-size-medium;
+            }
+            .play_count {
+              color: @color-text-d;
+              font-size: @font-size-medium;
+            }
+          }
+        }
+        .xbtn {
+          height: 60px;
+          width: 60px;
+        }
+      }
+      .detail_2 {
+        flex-direction: column;
+        border-bottom-width: 20px;
+        border-color: #f4f4f4;
+        padding: 20px 25px;
+        .detail_title {
+          margin: 0px 0 25px 0;
+          color: @color-highlight-background;
+          font-size: @font-size-large;
+          font-weight: bold;
+        }
+        .detail_info {
+          color: @color-highlight-background;
+          font-size: @font-size-small;
+          line-height: 40px;
+        }
+      }
+      .episode_container {
+        height: 300px;
+        flex-direction: column;
+        .title {
+          margin: 25px 0 0 25px;
+          color: @color-highlight-background;
+          font-size: @font-size-large;
+          font-weight: bold;
+        }
+        .episode_lists {
+          margin: 20px 18px;
+          flex-direction: row;
+          stack {
+            height: 300px;
+            .episode_item {
+              flex-direction: column;
+              width: 226px;
+              height: 188px;
+              border-top-left-radius: 13px;
+              border-top-right-radius: 13px;
+              margin: 0 7px 12px 7px;
+              .wrap_img {
+                width: 100%;
+                height: 127px;
+                border-top-left-radius: 13px;
+                border-top-right-radius: 13px;
+                background-color: @color-text-d;
+                background-repeat: no-repeat;
+                background-position: center;
+                background-size: cover;
+              }
+              .text {
+                height: 61px;
+                padding: 0px 6px;
+                background-color: #ffffff;
+                color: #6c6c78;
+                line-height: 61px;
+                text-align: center;
+                font-size: @font-size-medium;
+                .no-wrap();
+              }
+            }
+            .active {
+              border-bottom-left-radius: 8px;
+              border-bottom-right-radius: 8px;
+              border-width: 6px;
+              border-color: rgba(101, 209, 212, 0.8);
+            }
+            .bg {
+              background-image: url('/common/image/item_bg.png');
+              width: 240px;
+              height: 200px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+</style>
