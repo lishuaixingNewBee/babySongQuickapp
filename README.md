@@ -116,6 +116,7 @@ npm run release -- --debug
    - 组件没有onDestroy钩子，用if不会被触发。
    - 无selectionchange 选中文本改变和光标移动时触发(据说1030会加上)。
    - 有没有类似 touchstart  和 touchend的事件
+   - this.$forceUpdate()相当于vue的this.$nextTick()
   ```
 3. 重新封装fetch接口
 ```
