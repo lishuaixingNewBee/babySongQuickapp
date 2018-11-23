@@ -204,5 +204,7 @@ injectRef.$http = http
 ```
     -  求小伙伴一起维护项目
 ```
-
+<p align="center">
+  <img height="200" src="https://user-gold-cdn.xitu.io/2018/11/23/1673ea1d0980ff01?w=516&h=365&f=png&s=196419">
+</p>
 <<<<<<< HEAD
