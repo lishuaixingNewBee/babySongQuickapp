@@ -39,12 +39,32 @@
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, {
-/******/ 				configurable: false,
-/******/ 				enumerable: true,
-/******/ 				get: getter
-/******/ 			});
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
 /******/ 		}
+/******/ 	};
+/******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
 /******/ 	};
 /******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
@@ -62,204 +82,18 @@
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "";
 /******/
+/******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 97);
+/******/ 	return __webpack_require__(__webpack_require__.s = "./src/pages/play/index.ux?uxType=page");
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 100:
-/***/ (function(module, exports, __webpack_require__) {
-
-var $app_template$ = __webpack_require__(101)
-var $app_style$ = __webpack_require__(102)
-var $app_script$ = __webpack_require__(103)
-
-$app_define$('@app-component/quist-overlay', [], function($app_require$, $app_exports$, $app_module$){
-     $app_script$($app_module$, $app_exports$, $app_require$)
-     if ($app_exports$.__esModule && $app_exports$.default) {
-            $app_module$.exports = $app_exports$.default
-        }
-     $app_module$.exports.template = $app_template$
-     $app_module$.exports.style = $app_style$
-})
-
-
-/***/ }),
-
-/***/ 101:
-/***/ (function(module, exports) {
-
-module.exports = {
-  "type": "div",
-  "attr": {},
-  "classList": [
-    "quist-overlay"
-  ],
-  "children": [
-    {
-      "type": "div",
-      "attr": {
-        "show": function () {return this.show}
-      },
-      "classList": function () {return ['quist-overlay-mask', this.className]},
-      "style": {
-        "backgroundColor": function () {return this.background}
-      },
-      "events": {
-        "click": "overlayClick"
-      },
-      "children": [
-        {
-          "type": "slot",
-          "attr": {}
-        }
-      ]
-    }
-  ]
-}
-
-/***/ }),
-
-/***/ 102:
-/***/ (function(module, exports) {
-
-module.exports = {
-  "@KEYFRAMES": {
-    "quistOverlayEnter": [
-      {
-        "opacity": 0,
-        "time": 0
-      },
-      {
-        "opacity": 1,
-        "time": 100
-      }
-    ],
-    "quistOverlayLeave": [
-      {
-        "opacity": 1,
-        "time": 0
-      },
-      {
-        "opacity": 0,
-        "time": 100
-      }
-    ]
-  },
-  ".quist-overlay-enter": {
-    "animationName": "quistOverlayEnter"
-  },
-  ".quist-overlay-leave": {
-    "animationName": "quistOverlayLeave"
-  },
-  ".quist-overlay-mask": {
-    "position": "fixed",
-    "left": "0px",
-    "right": "0px",
-    "top": "0px",
-    "bottom": "0px",
-    "justifyContent": "center",
-    "alignItems": "center",
-    "animationDuration": "200ms",
-    "animationFillMode": "forwards"
-  }
-}
-
-/***/ }),
-
-/***/ 103:
-/***/ (function(module, exports) {
-
-module.exports = function(module, exports, $app_require$){'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = {
-  props: {
-    maskClosable: {
-      type: Boolean,
-      default: false
-    },
-    visible: {
-      type: Boolean,
-      default: false
-    },
-    background: {
-      type: String,
-      default: 'rgba(0, 0, 0, 0.6)'
-    }
-  },
-  data: {
-    show: false,
-    className: ''
-  },
-  onInit: function onInit() {
-    this.$watch('visible', 'updateVisible');
-    this.updateVisible();
-  },
-  updateVisible: function updateVisible() {
-    var _this = this;
-
-    this.timeoutId && clearTimeout(this.timeoutId);
-    if (this.visible) {
-      this.show = true;
-      this.className = 'quist-overlay-enter';
-    } else {
-      this.className = 'quist-overlay-leave';
-      this.timeoutId = setTimeout(function () {
-        _this.show = false;
-      }, 200);
-    }
-  },
-  overlayClick: function overlayClick() {
-    this.maskClosable ? this.$emit('quiOverlayClick') : '';
-  }
-};}
-
-/***/ }),
-
-/***/ 104:
-/***/ (function(module, exports) {
-
-module.exports = {
-  "type": "quist-overlay",
-  "attr": {
-    "visible": function () {return this.visible},
-    "maskClosable": function () {return this.maskClosable}
-  },
-  "events": {
-    "qui-overlay-click": "overlayClick"
-  },
-  "children": [
-    {
-      "type": "div",
-      "attr": {
-        "show": function () {return this.show}
-      },
-      "classList": function () {return ['quist-drawer', 'quist-drawer-' + (this.placement)]},
-      "children": [
-        {
-          "type": "div",
-          "attr": {},
-          "classList": function () {return ['quist-drawer-content', this.animationClass]},
-          "style": function () {return this.contentStyle},
-          "children": [
-            {
-              "type": "slot",
-              "attr": {}
-            }
-          ]
-        }
-      ]
-    }
-  ]
-}
-
-/***/ }),
-
-/***/ 105:
+/***/ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/style-loader.js?index=0&type=style!./node_modules/less-loader/dist/cjs.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=style!./src/components/drawer/index.ux?uxType=comp":
+/*!********************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/style-loader.js?index=0&type=style!./node_modules/less-loader/dist/cjs.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=style!./src/components/drawer/index.ux?uxType=comp ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -438,211 +272,62 @@ module.exports = {
 
 /***/ }),
 
-/***/ 106:
-/***/ (function(module, exports) {
-
-module.exports = function(module, exports, $app_require$){'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = {
-  props: {
-    maskClosable: {
-      type: Boolean,
-      default: true
-    },
-    visible: {
-      type: Boolean,
-      default: false
-    },
-    placement: {
-      type: String,
-      default: 'bottom'
-    }
-  },
-  data: function data() {
-    return {
-      show: this.visible,
-      contentStyle: {},
-      animationClass: ''
-    };
-  },
-  onInit: function onInit() {
-    this.setDefault();
-    this.setContentStyle();
-    this.toggleVisible(this.visible);
-  },
-  setDefault: function setDefault() {
-    this.$watch('visible', 'toggleVisible');
-  },
-  toggleVisible: function toggleVisible(visible) {
-    var _this = this;
-
-    this.timeoutId && clearTimeout(this.timeoutId);
-    if (visible) {
-      this.show = true;
-      this.animationClass = this.placement + 'drawerenter';
-    } else {
-      this.animationClass = this.placement + 'drawerleave';
-      this.timeoutId = setTimeout(function () {
-        _this.show = false;
-      }, 200);
-    }
-  },
-  setContentStyle: function setContentStyle() {
-    if (this.placement === 'bottom' || this.placement === 'top') {
-      this.contentStyle = {
-        width: '750px',
-        height: 'auto'
-      };
-    } else {
-      this.contentStyle = {
-        width: 'auto',
-        height: '100%'
-      };
-    }
-  },
-  overlayClick: function overlayClick() {
-    this.$emit('onClose');
-  }
-};}
-
-/***/ }),
-
-/***/ 107:
+/***/ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/style-loader.js?index=0&type=style!./node_modules/less-loader/dist/cjs.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=style!./src/components/mask/index.ux?uxType=comp":
+/*!******************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/style-loader.js?index=0&type=style!./node_modules/less-loader/dist/cjs.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=style!./src/components/mask/index.ux?uxType=comp ***!
+  \******************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
 /***/ (function(module, exports) {
 
 module.exports = {
-  "type": "drawer-view",
-  "attr": {
-    "visible": function () {return this.songListVisible},
-    "placement": "bottom"
+  "@KEYFRAMES": {
+    "quistOverlayEnter": [
+      {
+        "opacity": 0,
+        "time": 0
+      },
+      {
+        "opacity": 1,
+        "time": 100
+      }
+    ],
+    "quistOverlayLeave": [
+      {
+        "opacity": 1,
+        "time": 0
+      },
+      {
+        "opacity": 0,
+        "time": 100
+      }
+    ]
   },
-  "events": {
-    "on-close": "close"
+  ".quist-overlay-enter": {
+    "animationName": "quistOverlayEnter"
   },
-  "children": [
-    {
-      "type": "div",
-      "attr": {},
-      "classList": [
-        "list-wrap"
-      ],
-      "children": [
-        {
-          "type": "div",
-          "attr": {},
-          "classList": [
-            "list-header"
-          ],
-          "children": [
-            {
-              "type": "div",
-              "attr": {},
-              "classList": [
-                "left"
-              ],
-              "children": [
-                {
-                  "type": "image",
-                  "attr": {
-                    "src": "/common/image/music3.svg"
-                  },
-                  "classList": [
-                    "icon-music"
-                  ]
-                },
-                {
-                  "type": "text",
-                  "attr": {
-                    "value": function () {return '播放列表 ( ' + (this.songList.length) + ' )'}
-                  }
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "type": "list",
-          "attr": {
-            "id": "list"
-          },
-          "classList": [
-            "list-content"
-          ],
-          "id": "list",
-          "children": [
-            {
-              "type": "block",
-              "attr": {},
-              "repeat": {
-                "exp": function () {return this.songList},
-                "key": "index",
-                "value": "item"
-              },
-              "children": [
-                {
-                  "type": "list-item",
-                  "attr": {
-                    "type": "song"
-                  },
-                  "classList": [
-                    "item"
-                  ],
-                  "events": {
-                    "click": function (evt) {this.goIndex(this.index,evt)}
-                  },
-                  "children": [
-                    {
-                      "type": "image",
-                      "attr": {
-                        "src": "/common/image/voice.svg",
-                        "show": function () {return this.index==this.currentIndex}
-                      },
-                      "classList": [
-                        "icon-voice"
-                      ]
-                    },
-                    {
-                      "type": "text",
-                      "attr": {
-                        "value": function () {return this.item.title}
-                      },
-                      "classList": function () {return ['name', this.index==this.currentIndex?'playing':'']}
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "type": "div",
-          "attr": {},
-          "classList": [
-            "footer"
-          ],
-          "events": {
-            "click": "close"
-          },
-          "children": [
-            {
-              "type": "text",
-              "attr": {
-                "value": "关闭"
-              }
-            }
-          ]
-        }
-      ]
-    }
-  ]
+  ".quist-overlay-leave": {
+    "animationName": "quistOverlayLeave"
+  },
+  ".quist-overlay-mask": {
+    "position": "fixed",
+    "left": "0px",
+    "right": "0px",
+    "top": "0px",
+    "bottom": "0px",
+    "justifyContent": "center",
+    "alignItems": "center",
+    "animationDuration": "200ms",
+    "animationFillMode": "forwards"
+  }
 }
 
 /***/ }),
 
-/***/ 108:
+/***/ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/style-loader.js?index=0&type=style!./node_modules/less-loader/dist/cjs.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=style!./src/components/songlist/index.ux?uxType=comp":
+/*!**********************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/style-loader.js?index=0&type=style!./node_modules/less-loader/dist/cjs.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=style!./src/components/songlist/index.ux?uxType=comp ***!
+  \**********************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -1080,381 +765,11 @@ module.exports = {
 
 /***/ }),
 
-/***/ 109:
-/***/ (function(module, exports) {
-
-module.exports = function(module, exports, $app_require$){'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = {
-  props: {
-    songListVisible: {
-      type: Boolean,
-      default: false
-    },
-    songList: {
-      type: Array,
-      default: function _default() {
-        return [];
-      }
-    },
-    currentIndex: {
-      type: Number,
-      default: 0
-    }
-  },
-  onInit: function onInit() {
-    this.$watch('songListVisible', 'watchPropsChange');
-  },
-  onReady: function onReady() {
-    this.$element('list').scrollTo({ index: this.currentIndex, smooth: true });
-  },
-  watchPropsChange: function watchPropsChange(newV, oldV) {
-    this.$element('list').scrollTo({ index: this.currentIndex, smooth: true });
-  },
-  close: function close() {
-    this.$emit('onClose');
-  },
-  goIndex: function goIndex(index) {
-    this.$dispatch('changeCurrentIndex', index);
-  }
-};}
-
-/***/ }),
-
-/***/ 110:
-/***/ (function(module, exports) {
-
-module.exports = {
-  "type": "div",
-  "attr": {},
-  "classList": [
-    "play_page",
-    "page_container"
-  ],
-  "children": [
-    {
-      "type": "stack",
-      "attr": {},
-      "children": [
-        {
-          "type": "div",
-          "attr": {},
-          "classList": [
-            "container_bg"
-          ],
-          "children": [
-            {
-              "type": "stack",
-              "attr": {},
-              "classList": [
-                "container_box"
-              ],
-              "children": [
-                {
-                  "type": "image",
-                  "attr": {
-                    "src": function () {return this.songList[this.currentIndex].poster_url}
-                  },
-                  "classList": [
-                    "img_wrap"
-                  ]
-                },
-                {
-                  "type": "div",
-                  "attr": {},
-                  "classList": [
-                    "wave_container"
-                  ]
-                },
-                {
-                  "type": "div",
-                  "attr": {},
-                  "classList": [
-                    "bg_color"
-                  ]
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "type": "div",
-          "attr": {},
-          "classList": [
-            "cd_container"
-          ],
-          "children": [
-            {
-              "type": "stack",
-              "attr": {},
-              "classList": [
-                "cd_box"
-              ],
-              "children": [
-                {
-                  "type": "stack",
-                  "attr": {},
-                  "classList": function () {return ['coverImgbox', this.isplaying?'musicisplay':'musicispaused']},
-                  "children": [
-                    {
-                      "type": "image",
-                      "attr": {
-                        "src": "http://c2.h54hterh.top/manage/image/259de4e98ecb9cb5f66e15ec218d6883.png"
-                      },
-                      "classList": [
-                        "coverbgImg"
-                      ]
-                    },
-                    {
-                      "type": "image",
-                      "attr": {
-                        "src": function () {return this.songList[this.currentIndex].poster_url}
-                      },
-                      "classList": [
-                        "songcoverImg"
-                      ]
-                    },
-                    {
-                      "type": "div",
-                      "attr": {},
-                      "classList": [
-                        "icon-play"
-                      ],
-                      "events": {
-                        "click": "playMusic"
-                      },
-                      "children": [
-                        {
-                          "type": "image",
-                          "attr": {
-                            "src": "/common/image/play3.png"
-                          },
-                          "shown": function () {return !this.isplaying}
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "type": "div",
-                  "attr": {},
-                  "classList": [
-                    "turn_container"
-                  ],
-                  "children": [
-                    {
-                      "type": "image",
-                      "attr": {
-                        "src": "/common/image/control.png"
-                      },
-                      "classList": function () {return ['turn', this.isplaying?'start_turn':'start_turn']}
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "type": "div",
-          "attr": {},
-          "classList": [
-            "play_minbar"
-          ],
-          "children": [
-            {
-              "type": "div",
-              "attr": {},
-              "classList": [
-                "progress-wrapper"
-              ],
-              "children": [
-                {
-                  "type": "text",
-                  "attr": {
-                    "value": function () {return this.formatCurrentTime}
-                  }
-                },
-                {
-                  "type": "slider",
-                  "attr": {
-                    "min": "0",
-                    "max": function () {return this.duration},
-                    "selectedColor": "#20B2AA",
-                    "color": "#f4f4f4",
-                    "step": "1",
-                    "value": function () {return this.currentTime}
-                  },
-                  "classList": [
-                    "progress"
-                  ],
-                  "events": {
-                    "change": "sliderChange"
-                  }
-                },
-                {
-                  "type": "text",
-                  "attr": {
-                    "value": function () {return this.formatDuration}
-                  }
-                }
-              ]
-            },
-            {
-              "type": "div",
-              "attr": {},
-              "classList": [
-                "operators"
-              ],
-              "children": [
-                {
-                  "type": "div",
-                  "attr": {},
-                  "classList": [
-                    "icon",
-                    "mode"
-                  ],
-                  "events": {
-                    "click": "mode"
-                  },
-                  "children": [
-                    {
-                      "type": "image",
-                      "attr": {
-                        "src": "/common/image/share2.svg"
-                      },
-                      "classList": [
-                        "icon-playbar-singlecycle"
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "type": "div",
-                  "attr": {},
-                  "classList": [
-                    "icon",
-                    "prev"
-                  ],
-                  "events": {
-                    "click": "prev"
-                  },
-                  "children": [
-                    {
-                      "type": "image",
-                      "attr": {
-                        "src": "/common/image/prev.svg"
-                      },
-                      "classList": [
-                        "icon-pre"
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "type": "div",
-                  "attr": {},
-                  "classList": [
-                    "icon",
-                    "play"
-                  ],
-                  "events": {
-                    "click": "playMusic"
-                  },
-                  "children": [
-                    {
-                      "type": "image",
-                      "attr": {
-                        "src": "/common/image/pause.svg"
-                      },
-                      "classList": [
-                        "icon-pause"
-                      ],
-                      "shown": function () {return this.isplaying}
-                    },
-                    {
-                      "type": "image",
-                      "attr": {
-                        "src": "/common/image/play2.svg"
-                      },
-                      "classList": [
-                        "icon-play"
-                      ],
-                      "shown": function () {return !this.isplaying}
-                    }
-                  ]
-                },
-                {
-                  "type": "div",
-                  "attr": {},
-                  "classList": [
-                    "icon",
-                    "next"
-                  ],
-                  "events": {
-                    "click": "next"
-                  },
-                  "children": [
-                    {
-                      "type": "image",
-                      "attr": {
-                        "src": "/common/image/next.svg"
-                      },
-                      "classList": [
-                        "icon-next"
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "type": "div",
-                  "attr": {},
-                  "classList": [
-                    "icon",
-                    "music-list"
-                  ],
-                  "events": {
-                    "click": "handlerList"
-                  },
-                  "children": [
-                    {
-                      "type": "image",
-                      "attr": {
-                        "src": "/common/image/music-list.svg"
-                      },
-                      "classList": [
-                        "icon-music-list"
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "type": "song-list",
-      "attr": {
-        "songListVisible": function () {return this.songListVisible},
-        "currentIndex": function () {return this.currentIndex},
-        "songList": function () {return this.songList}
-      },
-      "shown": function () {return this.songList.length},
-      "events": {
-        "on-close": "close"
-      }
-    }
-  ]
-}
-
-/***/ }),
-
-/***/ 111:
+/***/ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/style-loader.js?index=0&type=style!./node_modules/less-loader/dist/cjs.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=style!./src/pages/play/index.ux?uxType=page":
+/*!*************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/style-loader.js?index=0&type=style!./node_modules/less-loader/dist/cjs.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=style!./src/pages/play/index.ux?uxType=page ***!
+  \*************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -2263,27 +1578,581 @@ module.exports = {
 
 /***/ }),
 
-/***/ 112:
+/***/ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/template-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=template!./src/components/drawer/index.ux?uxType=comp&importNames[]=quist-overlay":
+/*!********************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/template-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=template!./src/components/drawer/index.ux?uxType=comp&importNames[]=quist-overlay ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = {
+  "type": "quist-overlay",
+  "attr": {
+    "visible": function () {return this.visible},
+    "maskClosable": function () {return this.maskClosable}
+  },
+  "events": {
+    "qui-overlay-click": "overlayClick"
+  },
+  "children": [
+    {
+      "type": "div",
+      "attr": {
+        "show": function () {return this.show}
+      },
+      "classList": function () {return ['quist-drawer', '' + 'quist-drawer-' + (this.placement)]},
+      "children": [
+        {
+          "type": "div",
+          "attr": {},
+          "classList": function () {return ['quist-drawer-content', this.animationClass]},
+          "style": function () {return this.contentStyle},
+          "children": [
+            {
+              "type": "slot",
+              "attr": {}
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+
+/***/ }),
+
+/***/ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/template-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=template!./src/components/mask/index.ux?uxType=comp&":
+/*!***************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/template-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=template!./src/components/mask/index.ux?uxType=comp& ***!
+  \***************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = {
+  "type": "div",
+  "attr": {},
+  "classList": [
+    "quist-overlay"
+  ],
+  "children": [
+    {
+      "type": "div",
+      "attr": {
+        "show": function () {return this.show}
+      },
+      "classList": function () {return ['quist-overlay-mask', this.className]},
+      "style": {
+        "backgroundColor": function () {return this.background}
+      },
+      "events": {
+        "click": "overlayClick"
+      },
+      "children": [
+        {
+          "type": "slot",
+          "attr": {}
+        }
+      ]
+    }
+  ]
+}
+
+/***/ }),
+
+/***/ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/template-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=template!./src/components/songlist/index.ux?uxType=comp&importNames[]=drawer-view":
+/*!********************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/template-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=template!./src/components/songlist/index.ux?uxType=comp&importNames[]=drawer-view ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = {
+  "type": "drawer-view",
+  "attr": {
+    "visible": function () {return this.songListVisible},
+    "placement": "bottom"
+  },
+  "events": {
+    "on-close": "close"
+  },
+  "children": [
+    {
+      "type": "div",
+      "attr": {},
+      "classList": [
+        "list-wrap"
+      ],
+      "children": [
+        {
+          "type": "div",
+          "attr": {},
+          "classList": [
+            "list-header"
+          ],
+          "children": [
+            {
+              "type": "div",
+              "attr": {},
+              "classList": [
+                "left"
+              ],
+              "children": [
+                {
+                  "type": "image",
+                  "attr": {
+                    "src": "/common/image/music3.svg"
+                  },
+                  "classList": [
+                    "icon-music"
+                  ]
+                },
+                {
+                  "type": "text",
+                  "attr": {
+                    "value": function () {return '' + '播放列表 ( ' + (this.songList.length) + ' )'}
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "attr": {
+            "id": "list"
+          },
+          "classList": [
+            "list-content"
+          ],
+          "id": "list",
+          "children": [
+            {
+              "type": "block",
+              "attr": {},
+              "repeat": {
+                "exp": function () {return this.songList},
+                "key": "index",
+                "value": "item"
+              },
+              "children": [
+                {
+                  "type": "list-item",
+                  "attr": {
+                    "type": "song"
+                  },
+                  "classList": [
+                    "item"
+                  ],
+                  "events": {
+                    "click": function (evt) {this.goIndex(this.index,evt)}
+                  },
+                  "children": [
+                    {
+                      "type": "image",
+                      "attr": {
+                        "src": "/common/image/voice.svg",
+                        "show": function () {return this.index==this.currentIndex}
+                      },
+                      "classList": [
+                        "icon-voice"
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "attr": {
+                        "value": function () {return this.item.title}
+                      },
+                      "classList": function () {return ['name', this.index==this.currentIndex?'playing':'']}
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "div",
+          "attr": {},
+          "classList": [
+            "footer"
+          ],
+          "events": {
+            "click": "close"
+          },
+          "children": [
+            {
+              "type": "text",
+              "attr": {
+                "value": "关闭"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+
+/***/ }),
+
+/***/ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/template-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=template!./src/pages/play/index.ux?uxType=page&importNames[]=song-list":
+/*!*********************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/template-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=template!./src/pages/play/index.ux?uxType=page&importNames[]=song-list ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = {
+  "type": "div",
+  "attr": {},
+  "classList": [
+    "play_page",
+    "page_container"
+  ],
+  "children": [
+    {
+      "type": "stack",
+      "attr": {},
+      "children": [
+        {
+          "type": "div",
+          "attr": {},
+          "classList": [
+            "container_bg"
+          ],
+          "children": [
+            {
+              "type": "stack",
+              "attr": {},
+              "classList": [
+                "container_box"
+              ],
+              "children": [
+                {
+                  "type": "image",
+                  "attr": {
+                    "src": function () {return this.songList[this.currentIndex].poster_url}
+                  },
+                  "classList": [
+                    "img_wrap"
+                  ]
+                },
+                {
+                  "type": "div",
+                  "attr": {},
+                  "classList": [
+                    "wave_container"
+                  ]
+                },
+                {
+                  "type": "div",
+                  "attr": {},
+                  "classList": [
+                    "bg_color"
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "div",
+          "attr": {},
+          "classList": [
+            "cd_container"
+          ],
+          "children": [
+            {
+              "type": "stack",
+              "attr": {},
+              "classList": [
+                "cd_box"
+              ],
+              "children": [
+                {
+                  "type": "stack",
+                  "attr": {},
+                  "classList": function () {return ['coverImgbox', this.isplaying?'musicisplay':'musicispaused']},
+                  "children": [
+                    {
+                      "type": "image",
+                      "attr": {
+                        "src": "http://c2.h54hterh.top/manage/image/259de4e98ecb9cb5f66e15ec218d6883.png"
+                      },
+                      "classList": [
+                        "coverbgImg"
+                      ]
+                    },
+                    {
+                      "type": "image",
+                      "attr": {
+                        "src": function () {return this.songList[this.currentIndex].poster_url}
+                      },
+                      "classList": [
+                        "songcoverImg"
+                      ]
+                    },
+                    {
+                      "type": "div",
+                      "attr": {},
+                      "classList": [
+                        "icon-play"
+                      ],
+                      "events": {
+                        "click": "playMusic"
+                      },
+                      "children": [
+                        {
+                          "type": "image",
+                          "attr": {
+                            "src": "/common/image/play3.png"
+                          },
+                          "shown": function () {return !this.isplaying}
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "div",
+                  "attr": {},
+                  "classList": [
+                    "turn_container"
+                  ],
+                  "children": [
+                    {
+                      "type": "image",
+                      "attr": {
+                        "src": "/common/image/control.png"
+                      },
+                      "classList": function () {return ['turn', this.isplaying?'start_turn':'start_turn']}
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "div",
+          "attr": {},
+          "classList": [
+            "play_minbar"
+          ],
+          "children": [
+            {
+              "type": "div",
+              "attr": {},
+              "classList": [
+                "progress-wrapper"
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "attr": {
+                    "value": function () {return this.formatCurrentTime}
+                  }
+                },
+                {
+                  "type": "slider",
+                  "attr": {
+                    "min": "0",
+                    "max": function () {return this.duration},
+                    "selectedColor": "#20B2AA",
+                    "color": "#f4f4f4",
+                    "step": "1",
+                    "value": function () {return this.currentTime}
+                  },
+                  "classList": [
+                    "progress"
+                  ],
+                  "events": {
+                    "change": "sliderChange"
+                  }
+                },
+                {
+                  "type": "text",
+                  "attr": {
+                    "value": function () {return this.formatDuration}
+                  }
+                }
+              ]
+            },
+            {
+              "type": "div",
+              "attr": {},
+              "classList": [
+                "operators"
+              ],
+              "children": [
+                {
+                  "type": "div",
+                  "attr": {},
+                  "classList": [
+                    "icon",
+                    "mode"
+                  ],
+                  "events": {
+                    "click": "mode"
+                  },
+                  "children": [
+                    {
+                      "type": "image",
+                      "attr": {
+                        "src": "/common/image/share2.svg"
+                      },
+                      "classList": [
+                        "icon-playbar-singlecycle"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "div",
+                  "attr": {},
+                  "classList": [
+                    "icon",
+                    "prev"
+                  ],
+                  "events": {
+                    "click": "prev"
+                  },
+                  "children": [
+                    {
+                      "type": "image",
+                      "attr": {
+                        "src": "/common/image/prev.svg"
+                      },
+                      "classList": [
+                        "icon-pre"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "div",
+                  "attr": {},
+                  "classList": [
+                    "icon",
+                    "play"
+                  ],
+                  "events": {
+                    "click": "playMusic"
+                  },
+                  "children": [
+                    {
+                      "type": "image",
+                      "attr": {
+                        "src": "/common/image/pause.svg"
+                      },
+                      "classList": [
+                        "icon-pause"
+                      ],
+                      "shown": function () {return this.isplaying}
+                    },
+                    {
+                      "type": "image",
+                      "attr": {
+                        "src": "/common/image/play2.svg"
+                      },
+                      "classList": [
+                        "icon-play"
+                      ],
+                      "shown": function () {return !this.isplaying}
+                    }
+                  ]
+                },
+                {
+                  "type": "div",
+                  "attr": {},
+                  "classList": [
+                    "icon",
+                    "next"
+                  ],
+                  "events": {
+                    "click": "next"
+                  },
+                  "children": [
+                    {
+                      "type": "image",
+                      "attr": {
+                        "src": "/common/image/next.svg"
+                      },
+                      "classList": [
+                        "icon-next"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "div",
+                  "attr": {},
+                  "classList": [
+                    "icon",
+                    "music-list"
+                  ],
+                  "events": {
+                    "click": "handlerList"
+                  },
+                  "children": [
+                    {
+                      "type": "image",
+                      "attr": {
+                        "src": "/common/image/music-list.svg"
+                      },
+                      "classList": [
+                        "icon-music-list"
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "song-list",
+      "attr": {
+        "songListVisible": function () {return this.songListVisible},
+        "currentIndex": function () {return this.currentIndex},
+        "songList": function () {return this.songList}
+      },
+      "shown": function () {return this.songList.length},
+      "events": {
+        "on-close": "close"
+      }
+    }
+  ]
+}
+
+/***/ }),
+
+/***/ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/script-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/module-loader.js!./node_modules/babel-loader/lib/index.js?cwd=/Users/lijun/Downloads/complaint/babySongQuickapp&plugins[]=/Users/lijun/Downloads/complaint/babySongQuickapp/node_modules/@hap-toolkit/dsl-xvm/lib/loader/babel-plugin-jsx.js&comments=false!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/access-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=script!./src/pages/play/index.ux?uxType=page":
+/*!*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/@hap-toolkit/dsl-xvm/lib/loader/script-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/module-loader.js!./node_modules/babel-loader/lib?cwd=/Users/lijun/Downloads/complaint/babySongQuickapp&plugins[]=/Users/lijun/Downloads/complaint/babySongQuickapp/node_modules/@hap-toolkit/dsl-xvm/lib/loader/babel-plugin-jsx.js&comments=false!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/access-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=script!./src/pages/play/index.ux?uxType=page ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = function(module, exports, $app_require$){'use strict';
+module.exports = function __scriptModule__ (module, exports, $app_require$){"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports["default"] = void 0;
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+var _util = _interopRequireDefault(__webpack_require__(/*! ../../common/js/util */ "./src/common/js/util.js"));
 
-var _util = __webpack_require__(8);
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-var _util2 = _interopRequireDefault(_util);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 var musicData = {};
 var audio = {};
-exports.default = {
-  private: {
+var _default = {
+  "private": {
     placement: '',
     songListVisible: false,
     currentIndex: 0,
@@ -2311,19 +2180,23 @@ exports.default = {
 
     $umeng_stat.resume(this);
     var currentPlayerId = musicData.currentPlayerId;
+
     if (currentPlayerId) {
       var currentI = musicData.list.findIndex(function (item) {
         return item.article_id === currentPlayerId;
       });
+
       if (currentI > -1) {
         this.currentIndex = currentI;
       }
     }
+
     this.initAudio();
 
     if (!audio.src || audio.src !== this.playerData.audios[0].audio_src) {
       this.setMusic();
     }
+
     this.handlerProgress();
 
     audio.onplay = function () {
@@ -2333,28 +2206,32 @@ exports.default = {
     audio.onpause = function () {
       _this.isplaying = false;
     };
+
     audio.ondurationchange = function () {
       _this.isplaying = true;
     };
 
     audio.ontimeupdate = function () {
       _this.isplaying = true;
+
       _this.handlerProgress();
     };
 
     audio.onended = function () {
       _this.isplaying = false;
+
       if (_this.currentIndex < Number(_this.songList && _this.songList.length - 1)) {
         _this.currentIndex = _this.currentIndex + 1;
       } else {
         _this.currentIndex = 0;
       }
+
       _this.setMusic();
     };
 
     audio.onerror = function (e) {
       _this.$app.$def.prompt.showToast({
-        message: '\u97F3\u9891\u6587\u4EF6\u5F02\u5E38\uFF01'
+        message: "\u97F3\u9891\u6587\u4EF6\u5F02\u5E38\uFF01"
       });
     };
   },
@@ -2368,6 +2245,7 @@ exports.default = {
       });
       return;
     }
+
     this.currentIndex = this.currentIndex - 1;
     this.setMusic();
   },
@@ -2378,6 +2256,7 @@ exports.default = {
       });
       return;
     }
+
     this.currentIndex = this.currentIndex + 1;
     this.setMusic();
   },
@@ -2394,7 +2273,7 @@ exports.default = {
   watchIndexChange: function watchIndexChange(newV, oldV) {
     this.playerData = this.songList[newV];
     musicData.currentIndex = newV;
-    console.info('\u76D1\u542C\u6570\u636E\u53D8\u5316\uFF1A', newV, oldV);
+    console.info("\u76D1\u542C\u6570\u636E\u53D8\u5316\uFF1A", newV, oldV);
   },
   _changeCurrentIndex: function _changeCurrentIndex(options) {
     var index = options.detail;
@@ -2403,15 +2282,18 @@ exports.default = {
   },
   handlerProgress: function handlerProgress() {
     this.currentTime = audio.currentTime;
-    this.formatCurrentTime = _util2.default.formatSeconds(audio.currentTime || 0);
+    this.formatCurrentTime = _util["default"].formatSeconds(audio.currentTime || 0);
   },
   initAudio: function initAudio() {
     this.duration = this.playerData.audios[0].duration;
-    this.formatDuration = _util2.default.formatSeconds(this.playerData.audios[0].duration);
-    this.$page.setTitleBar({ text: this.playerData.title });
+    this.formatDuration = _util["default"].formatSeconds(this.playerData.audios[0].duration);
+    this.$page.setTitleBar({
+      text: this.playerData.title
+    });
   },
   playMusic: function playMusic() {
     this.isplaying = !this.isplaying;
+
     if (this.isplaying) {
       audio.play();
     } else {
@@ -2423,7 +2305,6 @@ exports.default = {
     audio.currentTime = 0;
     this.currentTime = 0;
     audio.play();
-
     musicData.currentPlayerId = this.playerData.article_id;
     this.initAudio();
   },
@@ -2442,11 +2323,13 @@ exports.default = {
   backstagePlay: function backstagePlay() {
     audio.onended = function () {
       var list = musicData.list;
+
       if (musicData.currentIndex < Number(list.length)) {
         musicData.currentIndex = musicData.currentIndex + 1;
       } else {
         musicData.currentIndex = 0;
       }
+
       musicData.currentPlayerId = list[musicData.currentIndex].article_id;
       audio.src = list[musicData.currentIndex].audios[0].audio_src;
       audio.play();
@@ -2461,9 +2344,8 @@ exports.default = {
     this.$app.$def.showMenu();
   }
 };
-
-
-var moduleOwn = exports.default || module.exports;
+exports["default"] = _default;
+var moduleOwn = exports["default"] || module.exports;
 var accessors = ['public', 'protected', 'private'];
 
 if (moduleOwn.data && accessors.some(function (acc) {
@@ -2475,10 +2357,14 @@ if (moduleOwn.data && accessors.some(function (acc) {
   moduleOwn._descriptor = {};
   accessors.forEach(function (acc) {
     var accType = _typeof(moduleOwn[acc]);
+
     if (accType === 'object') {
       moduleOwn.data = Object.assign(moduleOwn.data, moduleOwn[acc]);
+
       for (var name in moduleOwn[acc]) {
-        moduleOwn._descriptor[name] = { access: acc };
+        moduleOwn._descriptor[name] = {
+          access: acc
+        };
       }
     } else if (accType === 'function') {
       console.warn('页面VM对象中的属性' + acc + '的值不能是函数，请使用对象');
@@ -2488,100 +2374,213 @@ if (moduleOwn.data && accessors.some(function (acc) {
 
 /***/ }),
 
-/***/ 8:
-/***/ (function(module, exports, __webpack_require__) {
+/***/ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/script-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/module-loader.js!./node_modules/babel-loader/lib/index.js?cwd=/Users/lijun/Downloads/complaint/babySongQuickapp&plugins[]=/Users/lijun/Downloads/complaint/babySongQuickapp/node_modules/@hap-toolkit/dsl-xvm/lib/loader/babel-plugin-jsx.js&comments=false!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=script!./src/components/drawer/index.ux?uxType=comp":
+/*!************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/@hap-toolkit/dsl-xvm/lib/loader/script-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/module-loader.js!./node_modules/babel-loader/lib?cwd=/Users/lijun/Downloads/complaint/babySongQuickapp&plugins[]=/Users/lijun/Downloads/complaint/babySongQuickapp/node_modules/@hap-toolkit/dsl-xvm/lib/loader/babel-plugin-jsx.js&comments=false!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=script!./src/components/drawer/index.ux?uxType=comp ***!
+  \************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
 
-"use strict";
-
+module.exports = function __scriptModule__ (module, exports, $app_require$){"use strict";
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var util = function () {
-    function util() {
-        _classCallCheck(this, util);
+exports["default"] = void 0;
+var _default = {
+  props: {
+    maskClosable: {
+      type: Boolean,
+      "default": true
+    },
+    visible: {
+      type: Boolean,
+      "default": false
+    },
+    placement: {
+      type: String,
+      "default": 'bottom'
     }
+  },
+  data: function data() {
+    return {
+      show: this.visible,
+      contentStyle: {},
+      animationClass: ''
+    };
+  },
+  onInit: function onInit() {
+    this.setDefault();
+    this.setContentStyle();
+    this.toggleVisible(this.visible);
+  },
+  setDefault: function setDefault() {
+    this.$watch('visible', 'toggleVisible');
+  },
+  toggleVisible: function toggleVisible(visible) {
+    var _this = this;
 
-    _createClass(util, null, [{
-        key: 'randomNum',
-        value: function randomNum(Min, Max) {
-            // 随机数
-            var Range = Max - Min;
-            var Rand = Math.random();
-            var num = Min + Math.round(Rand * Range); //四舍五入
-            return num;
-        }
-    }, {
-        key: 'numW',
-        value: function numW(num) {
-            if (num >= 10000) {
-                return Math.round(num / 10000 * 100) / 100 + '万';
-            }
-            return num;
-        }
-    }, {
-        key: 'formatSeconds',
-        value: function formatSeconds(seconds) {
-            // 时间转换 hh:mm:ss
-            // 时间
-            var ss = parseInt(seconds); // 秒
-            var mm = 0; // 分
-            var hh = 0; // 小时
-            if (ss > 60) {
-                mm = parseInt(ss / 60);
-                ss = parseInt(ss % 60);
-            }
-            if (mm > 60) {
-                hh = parseInt(mm / 60);
-                mm = parseInt(mm % 60);
-            }
-            var result = ('00' + parseInt(ss)).slice(-2);
-            if (mm > 0) {
-                result = ('00' + parseInt(mm)).slice(-2) + ':' + result;
-            } else {
-                result = '00:' + result;
-            }
-            if (hh > 0) {
-                result = ('00' + parseInt(hh)).slice(-2) + ':' + result;
-            }
-            return result;
-        }
-        /* eslint-disable */
+    this.timeoutId && clearTimeout(this.timeoutId);
 
-    }, {
-        key: 'setConsole',
-        value: function setConsole() {
-            var text = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'this is console!';
-            var isOneLine = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
-            var author = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'GordanLee(github.com/lishuaixingNewBee)';
-
-            console.warn(text + '  ---  ' + author);
-        }
-    }]);
-
-    return util;
-}();
-
-exports.default = util;
-
-util.setConsole('李帅醒Plus+狗蛋实验室-基于quickapp开发');
+    if (visible) {
+      this.show = true;
+      this.animationClass = "".concat(this.placement, "drawerenter");
+    } else {
+      this.animationClass = "".concat(this.placement, "drawerleave");
+      this.timeoutId = setTimeout(function () {
+        _this.show = false;
+      }, 200);
+    }
+  },
+  setContentStyle: function setContentStyle() {
+    if (this.placement === 'bottom' || this.placement === 'top') {
+      this.contentStyle = {
+        width: '750px',
+        height: 'auto'
+      };
+    } else {
+      this.contentStyle = {
+        width: 'auto',
+        height: '100%'
+      };
+    }
+  },
+  overlayClick: function overlayClick() {
+    this.$emit('onClose');
+  }
+};
+exports["default"] = _default;}
 
 /***/ }),
 
-/***/ 97:
+/***/ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/script-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/module-loader.js!./node_modules/babel-loader/lib/index.js?cwd=/Users/lijun/Downloads/complaint/babySongQuickapp&plugins[]=/Users/lijun/Downloads/complaint/babySongQuickapp/node_modules/@hap-toolkit/dsl-xvm/lib/loader/babel-plugin-jsx.js&comments=false!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=script!./src/components/mask/index.ux?uxType=comp":
+/*!**********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/@hap-toolkit/dsl-xvm/lib/loader/script-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/module-loader.js!./node_modules/babel-loader/lib?cwd=/Users/lijun/Downloads/complaint/babySongQuickapp&plugins[]=/Users/lijun/Downloads/complaint/babySongQuickapp/node_modules/@hap-toolkit/dsl-xvm/lib/loader/babel-plugin-jsx.js&comments=false!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=script!./src/components/mask/index.ux?uxType=comp ***!
+  \**********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = function __scriptModule__ (module, exports, $app_require$){"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
+var _default = {
+  props: {
+    maskClosable: {
+      type: Boolean,
+      "default": false
+    },
+    visible: {
+      type: Boolean,
+      "default": false
+    },
+    background: {
+      type: String,
+      "default": 'rgba(0, 0, 0, 0.6)'
+    }
+  },
+  data: {
+    show: false,
+    className: ''
+  },
+  onInit: function onInit() {
+    this.$watch('visible', 'updateVisible');
+    this.updateVisible();
+  },
+  updateVisible: function updateVisible() {
+    var _this = this;
+
+    this.timeoutId && clearTimeout(this.timeoutId);
+
+    if (this.visible) {
+      this.show = true;
+      this.className = 'quist-overlay-enter';
+    } else {
+      this.className = 'quist-overlay-leave';
+      this.timeoutId = setTimeout(function () {
+        _this.show = false;
+      }, 200);
+    }
+  },
+  overlayClick: function overlayClick() {
+    this.maskClosable ? this.$emit('quiOverlayClick') : '';
+  }
+};
+exports["default"] = _default;}
+
+/***/ }),
+
+/***/ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/script-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/module-loader.js!./node_modules/babel-loader/lib/index.js?cwd=/Users/lijun/Downloads/complaint/babySongQuickapp&plugins[]=/Users/lijun/Downloads/complaint/babySongQuickapp/node_modules/@hap-toolkit/dsl-xvm/lib/loader/babel-plugin-jsx.js&comments=false!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=script!./src/components/songlist/index.ux?uxType=comp":
+/*!**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/@hap-toolkit/dsl-xvm/lib/loader/script-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/module-loader.js!./node_modules/babel-loader/lib?cwd=/Users/lijun/Downloads/complaint/babySongQuickapp&plugins[]=/Users/lijun/Downloads/complaint/babySongQuickapp/node_modules/@hap-toolkit/dsl-xvm/lib/loader/babel-plugin-jsx.js&comments=false!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=script!./src/components/songlist/index.ux?uxType=comp ***!
+  \**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = function __scriptModule__ (module, exports, $app_require$){"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
+var _default2 = {
+  props: {
+    songListVisible: {
+      type: Boolean,
+      "default": false
+    },
+    songList: {
+      type: Array,
+      "default": function _default() {
+        return [];
+      }
+    },
+    currentIndex: {
+      type: Number,
+      "default": 0
+    }
+  },
+  onInit: function onInit() {
+    this.$watch('songListVisible', 'watchPropsChange');
+  },
+  onReady: function onReady() {
+    this.$element('list').scrollTo({
+      index: this.currentIndex,
+      smooth: true
+    });
+  },
+  watchPropsChange: function watchPropsChange(newV, oldV) {
+    this.$element('list').scrollTo({
+      index: this.currentIndex,
+      smooth: true
+    });
+  },
+  close: function close() {
+    this.$emit('onClose');
+  },
+  goIndex: function goIndex(index) {
+    this.$dispatch('changeCurrentIndex', index);
+  }
+};
+exports["default"] = _default2;}
+
+/***/ }),
+
+/***/ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/ux-loader.js?cwd=/Users/lijun/Downloads/complaint/babySongQuickapp&type=import!./src/components/drawer/index.ux?uxType=comp&name=drawer-view":
+/*!***************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/@hap-toolkit/dsl-xvm/lib/loader/ux-loader.js?cwd=/Users/lijun/Downloads/complaint/babySongQuickapp&type=import!./src/components/drawer/index.ux?uxType=comp&name=drawer-view ***!
+  \***************************************************************************************************************************************************************************************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(98)
-var $app_template$ = __webpack_require__(110)
-var $app_style$ = __webpack_require__(111)
-var $app_script$ = __webpack_require__(112)
+__webpack_require__(/*! !../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/ux-loader.js?cwd=/Users/lijun/Downloads/complaint/babySongQuickapp&type=import!../mask/index.ux?uxType=comp&name=quist-overlay */ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/ux-loader.js?cwd=/Users/lijun/Downloads/complaint/babySongQuickapp&type=import!./src/components/mask/index.ux?uxType=comp&name=quist-overlay")
+var $app_template$ = __webpack_require__(/*! !../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/template-loader.js!../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=template!./index.ux?uxType=comp&importNames[]=quist-overlay */ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/template-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=template!./src/components/drawer/index.ux?uxType=comp&importNames[]=quist-overlay")
+var $app_style$ = __webpack_require__(/*! !../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/style-loader.js?index=0&type=style!less-loader!../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=style!./index.ux?uxType=comp */ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/style-loader.js?index=0&type=style!./node_modules/less-loader/dist/cjs.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=style!./src/components/drawer/index.ux?uxType=comp")
+var $app_script$ = __webpack_require__(/*! !../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/script-loader.js!../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/module-loader.js!../../../node_modules/babel-loader?cwd=/Users/lijun/Downloads/complaint/babySongQuickapp&plugins[]=/Users/lijun/Downloads/complaint/babySongQuickapp/node_modules/@hap-toolkit/dsl-xvm/lib/loader/babel-plugin-jsx.js&comments=false!../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=script!./index.ux?uxType=comp */ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/script-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/module-loader.js!./node_modules/babel-loader/lib/index.js?cwd=/Users/lijun/Downloads/complaint/babySongQuickapp&plugins[]=/Users/lijun/Downloads/complaint/babySongQuickapp/node_modules/@hap-toolkit/dsl-xvm/lib/loader/babel-plugin-jsx.js&comments=false!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=script!./src/components/drawer/index.ux?uxType=comp")
 
-$app_define$('@app-component/index', [], function($app_require$, $app_exports$, $app_module$){
+$app_define$('@app-component/drawer-view', [], function($app_require$, $app_exports$, $app_module$){
      $app_script$($app_module$, $app_exports$, $app_require$)
      if ($app_exports$.__esModule && $app_exports$.default) {
             $app_module$.exports = $app_exports$.default
@@ -2590,18 +2589,43 @@ $app_define$('@app-component/index', [], function($app_require$, $app_exports$, 
      $app_module$.exports.style = $app_style$
 })
 
-$app_bootstrap$('@app-component/index',{ packagerVersion: '0.0.5'})
+
+/***/ }),
+
+/***/ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/ux-loader.js?cwd=/Users/lijun/Downloads/complaint/babySongQuickapp&type=import!./src/components/mask/index.ux?uxType=comp&name=quist-overlay":
+/*!***************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/@hap-toolkit/dsl-xvm/lib/loader/ux-loader.js?cwd=/Users/lijun/Downloads/complaint/babySongQuickapp&type=import!./src/components/mask/index.ux?uxType=comp&name=quist-overlay ***!
+  \***************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var $app_template$ = __webpack_require__(/*! !../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/template-loader.js!../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=template!./index.ux?uxType=comp& */ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/template-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=template!./src/components/mask/index.ux?uxType=comp&")
+var $app_style$ = __webpack_require__(/*! !../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/style-loader.js?index=0&type=style!less-loader!../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=style!./index.ux?uxType=comp */ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/style-loader.js?index=0&type=style!./node_modules/less-loader/dist/cjs.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=style!./src/components/mask/index.ux?uxType=comp")
+var $app_script$ = __webpack_require__(/*! !../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/script-loader.js!../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/module-loader.js!../../../node_modules/babel-loader?cwd=/Users/lijun/Downloads/complaint/babySongQuickapp&plugins[]=/Users/lijun/Downloads/complaint/babySongQuickapp/node_modules/@hap-toolkit/dsl-xvm/lib/loader/babel-plugin-jsx.js&comments=false!../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=script!./index.ux?uxType=comp */ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/script-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/module-loader.js!./node_modules/babel-loader/lib/index.js?cwd=/Users/lijun/Downloads/complaint/babySongQuickapp&plugins[]=/Users/lijun/Downloads/complaint/babySongQuickapp/node_modules/@hap-toolkit/dsl-xvm/lib/loader/babel-plugin-jsx.js&comments=false!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=script!./src/components/mask/index.ux?uxType=comp")
+
+$app_define$('@app-component/quist-overlay', [], function($app_require$, $app_exports$, $app_module$){
+     $app_script$($app_module$, $app_exports$, $app_require$)
+     if ($app_exports$.__esModule && $app_exports$.default) {
+            $app_module$.exports = $app_exports$.default
+        }
+     $app_module$.exports.template = $app_template$
+     $app_module$.exports.style = $app_style$
+})
 
 
 /***/ }),
 
-/***/ 98:
+/***/ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/ux-loader.js?cwd=/Users/lijun/Downloads/complaint/babySongQuickapp&type=import!./src/components/songlist/index.ux?uxType=comp&name=song-list":
+/*!***************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/@hap-toolkit/dsl-xvm/lib/loader/ux-loader.js?cwd=/Users/lijun/Downloads/complaint/babySongQuickapp&type=import!./src/components/songlist/index.ux?uxType=comp&name=song-list ***!
+  \***************************************************************************************************************************************************************************************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(99)
-var $app_template$ = __webpack_require__(107)
-var $app_style$ = __webpack_require__(108)
-var $app_script$ = __webpack_require__(109)
+__webpack_require__(/*! !../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/ux-loader.js?cwd=/Users/lijun/Downloads/complaint/babySongQuickapp&type=import!../drawer/index.ux?uxType=comp&name=drawer-view */ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/ux-loader.js?cwd=/Users/lijun/Downloads/complaint/babySongQuickapp&type=import!./src/components/drawer/index.ux?uxType=comp&name=drawer-view")
+var $app_template$ = __webpack_require__(/*! !../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/template-loader.js!../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=template!./index.ux?uxType=comp&importNames[]=drawer-view */ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/template-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=template!./src/components/songlist/index.ux?uxType=comp&importNames[]=drawer-view")
+var $app_style$ = __webpack_require__(/*! !../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/style-loader.js?index=0&type=style!less-loader!../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=style!./index.ux?uxType=comp */ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/style-loader.js?index=0&type=style!./node_modules/less-loader/dist/cjs.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=style!./src/components/songlist/index.ux?uxType=comp")
+var $app_script$ = __webpack_require__(/*! !../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/script-loader.js!../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/module-loader.js!../../../node_modules/babel-loader?cwd=/Users/lijun/Downloads/complaint/babySongQuickapp&plugins[]=/Users/lijun/Downloads/complaint/babySongQuickapp/node_modules/@hap-toolkit/dsl-xvm/lib/loader/babel-plugin-jsx.js&comments=false!../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=script!./index.ux?uxType=comp */ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/script-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/module-loader.js!./node_modules/babel-loader/lib/index.js?cwd=/Users/lijun/Downloads/complaint/babySongQuickapp&plugins[]=/Users/lijun/Downloads/complaint/babySongQuickapp/node_modules/@hap-toolkit/dsl-xvm/lib/loader/babel-plugin-jsx.js&comments=false!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=script!./src/components/songlist/index.ux?uxType=comp")
 
 $app_define$('@app-component/song-list', [], function($app_require$, $app_exports$, $app_module$){
      $app_script$($app_module$, $app_exports$, $app_require$)
@@ -2615,15 +2639,121 @@ $app_define$('@app-component/song-list', [], function($app_require$, $app_export
 
 /***/ }),
 
-/***/ 99:
+/***/ "./src/common/js/util.js":
+/*!*******************************!*\
+  !*** ./src/common/js/util.js ***!
+  \*******************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(100)
-var $app_template$ = __webpack_require__(104)
-var $app_style$ = __webpack_require__(105)
-var $app_script$ = __webpack_require__(106)
+"use strict";
 
-$app_define$('@app-component/drawer-view', [], function($app_require$, $app_exports$, $app_module$){
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var util =
+/*#__PURE__*/
+function () {
+  function util() {
+    _classCallCheck(this, util);
+  }
+
+  _createClass(util, null, [{
+    key: "randomNum",
+    value: function randomNum(Min, Max) {
+      // 随机数
+      var Range = Max - Min;
+      var Rand = Math.random();
+      var num = Min + Math.round(Rand * Range); //四舍五入
+
+      return num;
+    }
+  }, {
+    key: "numW",
+    value: function numW(num) {
+      if (num >= 10000) {
+        return Math.round(num / 10000 * 100) / 100 + '万';
+      }
+
+      return num;
+    }
+  }, {
+    key: "formatSeconds",
+    value: function formatSeconds(seconds) {
+      // 时间转换 hh:mm:ss
+      // 时间
+      var ss = parseInt(seconds); // 秒
+
+      var mm = 0; // 分
+
+      var hh = 0; // 小时
+
+      if (ss > 60) {
+        mm = parseInt(ss / 60);
+        ss = parseInt(ss % 60);
+      }
+
+      if (mm > 60) {
+        hh = parseInt(mm / 60);
+        mm = parseInt(mm % 60);
+      }
+
+      var result = ('00' + parseInt(ss)).slice(-2);
+
+      if (mm > 0) {
+        result = ('00' + parseInt(mm)).slice(-2) + ':' + result;
+      } else {
+        result = '00:' + result;
+      }
+
+      if (hh > 0) {
+        result = ('00' + parseInt(hh)).slice(-2) + ':' + result;
+      }
+
+      return result;
+    }
+    /* eslint-disable */
+
+  }, {
+    key: "setConsole",
+    value: function setConsole() {
+      var text = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'this is console!';
+      var isOneLine = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+      var author = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'GordanLee(github.com/lishuaixingNewBee)';
+      console.warn("".concat(text, "  ---  ").concat(author));
+    }
+  }]);
+
+  return util;
+}();
+
+exports["default"] = util;
+util.setConsole('李帅醒Plus+狗蛋实验室-基于quickapp开发');
+
+/***/ }),
+
+/***/ "./src/pages/play/index.ux?uxType=page":
+/*!*********************************************!*\
+  !*** ./src/pages/play/index.ux?uxType=page ***!
+  \*********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(/*! !../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/ux-loader.js?cwd=/Users/lijun/Downloads/complaint/babySongQuickapp&type=import!../../components/songlist/index.ux?uxType=comp&name=song-list */ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/ux-loader.js?cwd=/Users/lijun/Downloads/complaint/babySongQuickapp&type=import!./src/components/songlist/index.ux?uxType=comp&name=song-list")
+var $app_template$ = __webpack_require__(/*! !../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/template-loader.js!../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=template!./index.ux?uxType=page&importNames[]=song-list */ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/template-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=template!./src/pages/play/index.ux?uxType=page&importNames[]=song-list")
+var $app_style$ = __webpack_require__(/*! !../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/style-loader.js?index=0&type=style!less-loader!../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=style!./index.ux?uxType=page */ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/style-loader.js?index=0&type=style!./node_modules/less-loader/dist/cjs.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=style!./src/pages/play/index.ux?uxType=page")
+var $app_script$ = __webpack_require__(/*! !../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/script-loader.js!../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/module-loader.js!../../../node_modules/babel-loader?cwd=/Users/lijun/Downloads/complaint/babySongQuickapp&plugins[]=/Users/lijun/Downloads/complaint/babySongQuickapp/node_modules/@hap-toolkit/dsl-xvm/lib/loader/babel-plugin-jsx.js&comments=false!../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/access-loader.js!../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=script!./index.ux?uxType=page */ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/script-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/module-loader.js!./node_modules/babel-loader/lib/index.js?cwd=/Users/lijun/Downloads/complaint/babySongQuickapp&plugins[]=/Users/lijun/Downloads/complaint/babySongQuickapp/node_modules/@hap-toolkit/dsl-xvm/lib/loader/babel-plugin-jsx.js&comments=false!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/access-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=script!./src/pages/play/index.ux?uxType=page")
+
+$app_define$('@app-component/index', [], function($app_require$, $app_exports$, $app_module$){
      $app_script$($app_module$, $app_exports$, $app_require$)
      if ($app_exports$.__esModule && $app_exports$.default) {
             $app_module$.exports = $app_exports$.default
@@ -2631,6 +2761,8 @@ $app_define$('@app-component/drawer-view', [], function($app_require$, $app_expo
      $app_module$.exports.template = $app_template$
      $app_module$.exports.style = $app_style$
 })
+
+$app_bootstrap$('@app-component/index',{ packagerVersion: '0.4.3'})
 
 
 /***/ })

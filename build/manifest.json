@@ -51,9 +51,9 @@
   "config": {
     "logLevel": "debug",
     "data": {
-      "umeng_appkey": "5beb87dbf1f55621d50003b3"
+      "umeng_appkey": "5beaf265f1f556e38d0000f8"
     },
-    "debug": false
+    "debug": true
   },
   "router": {
     "entry": "pages/home",

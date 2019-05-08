@@ -1,41 +1,24 @@
 {
-  "name": "babySong",
+  "name": "song",
   "version": "1.0.0",
   "subversion": {
-    "toolkit": "0.0.32"
+    "toolkit": "0.4.3"
   },
   "description": "",
   "scripts": {
-    "server": "hap server",
-    "debug": "hap debug",
     "build": "hap build",
     "release": "hap release",
-    "watch": "hap watch",
-    "hap-update": "hap update"
+    "server": "hap server",
+    "watch": "hap watch"
   },
   "devDependencies": {
-    "babel-cli": "^6.10.1",
-    "babel-core": "^6.10.4",
-    "babel-eslint": "^8.2.1",
-    "babel-loader": "^6.2.4",
-    "babel-plugin-syntax-jsx": "^6.18.0",
-    "css-loader": "^1.0.0",
-    "css-what": "^2.1.0",
-    "hap-toolkit": "0.0.36",
-    "install": "^0.12.2",
-    "koa": "^2.3.0",
-    "koa-body": "^2.5.0",
-    "koa-router": "^7.2.1",
-    "koa-send": "^4.1.1",
-    "koa-static": "^4.0.1",
-    "socket.io": "^2.1.0",
+    "js-base64": "^2.4.9",
+    "md5": "^2.2.1",
     "less": "^3.8.1",
     "less-loader": "^4.1.0",
-    "style-loader": "^0.23.1",
-    "webpack": "^3.11.0"
-  },
-  "dependencies": {
-    "js-base64": "^2.4.9",
-    "md5": "^2.2.1"
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.12.1",
+    "eslint-plugin-hybrid": "0.0.5",
+    "hap-toolkit": "^0.4.3"
   }
 }

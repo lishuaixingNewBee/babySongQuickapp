@@ -39,12 +39,32 @@
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, {
-/******/ 				configurable: false,
-/******/ 				enumerable: true,
-/******/ 				get: getter
-/******/ 			});
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
 /******/ 		}
+/******/ 	};
+/******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
 /******/ 	};
 /******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
@@ -62,349 +82,18 @@
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "";
 /******/
+/******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 36);
+/******/ 	return __webpack_require__(__webpack_require__.s = "./src/pages/album/video/index.ux?uxType=page");
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 10:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.getAlbum = getAlbum;
-function getAlbum(album_id) {
-    var page_no = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
-    var page_size = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
-
-    var params = {
-        album_id: album_id,
-        page_no: page_no,
-        page_size: page_size
-    };
-    return $http.get('/v1/album', params);
-}
-
-/***/ }),
-
-/***/ 36:
-/***/ (function(module, exports, __webpack_require__) {
-
-var $app_template$ = __webpack_require__(37)
-var $app_style$ = __webpack_require__(38)
-var $app_script$ = __webpack_require__(39)
-
-$app_define$('@app-component/index', [], function($app_require$, $app_exports$, $app_module$){
-     $app_script$($app_module$, $app_exports$, $app_require$)
-     if ($app_exports$.__esModule && $app_exports$.default) {
-            $app_module$.exports = $app_exports$.default
-        }
-     $app_module$.exports.template = $app_template$
-     $app_module$.exports.style = $app_style$
-})
-
-$app_bootstrap$('@app-component/index',{ packagerVersion: '0.0.5'})
-
-
-/***/ }),
-
-/***/ 37:
-/***/ (function(module, exports) {
-
-module.exports = {
-  "type": "div",
-  "attr": {},
-  "classList": [
-    "video_page",
-    "page_container"
-  ],
-  "children": [
-    {
-      "type": "stack",
-      "attr": {},
-      "classList": [
-        "video_container"
-      ],
-      "children": [
-        {
-          "type": "video",
-          "attr": {
-            "src": function () {return this.videoList[this.currentIndex].video_src},
-            "poster": function () {return this.videoList[this.currentIndex].poster_url},
-            "controls": "true",
-            "autoplay": "true"
-          },
-          "shown": function () {return this.videoList.length&&this.isPlay},
-          "events": {
-            "finish": "bindended"
-          }
-        },
-        {
-          "type": "stack",
-          "attr": {},
-          "classList": [
-            "mask"
-          ],
-          "shown": function () {return !this.isPlay},
-          "children": [
-            {
-              "type": "image",
-              "attr": {
-                "src": "http://c2.h54hterh.top/manage/thumbnail/01c650ee376e77567f336b3b2ac23f7f.jpeg"
-              },
-              "classList": [
-                "bg"
-              ]
-            },
-            {
-              "type": "image",
-              "attr": {
-                "src": "http://c2.h54hterh.top/manage/thumbnail/b4f6e786166365f446880811447971bb.png"
-              },
-              "classList": [
-                "btn"
-              ],
-              "events": {
-                "click": "play"
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "type": "div",
-      "attr": {},
-      "classList": [
-        "main"
-      ],
-      "children": [
-        {
-          "type": "div",
-          "attr": {},
-          "classList": [
-            "info"
-          ],
-          "children": [
-            {
-              "type": "div",
-              "attr": {},
-              "classList": [
-                "detail_1"
-              ],
-              "children": [
-                {
-                  "type": "div",
-                  "attr": {},
-                  "classList": [
-                    "left"
-                  ],
-                  "children": [
-                    {
-                      "type": "text",
-                      "attr": {
-                        "value": function () {return this.album_name}
-                      },
-                      "classList": [
-                        "title"
-                      ]
-                    },
-                    {
-                      "type": "div",
-                      "attr": {},
-                      "classList": [
-                        "c_desc"
-                      ],
-                      "children": [
-                        {
-                          "type": "text",
-                          "attr": {
-                            "value": "动画"
-                          },
-                          "classList": [
-                            "classify"
-                          ]
-                        },
-                        {
-                          "type": "text",
-                          "attr": {
-                            "value": function () {return '/ ' + (this.source) + ' /'}
-                          },
-                          "classList": [
-                            "source"
-                          ]
-                        },
-                        {
-                          "type": "text",
-                          "attr": {
-                            "value": function () {return (this.play_count) + '次观看'}
-                          },
-                          "classList": [
-                            "play_count"
-                          ]
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "type": "image",
-                  "attr": {
-                    "src": "/common/image/wx.svg"
-                  },
-                  "classList": [
-                    "share",
-                    "xbtn"
-                  ],
-                  "events": {
-                    "click": "share"
-                  }
-                }
-              ]
-            },
-            {
-              "type": "div",
-              "attr": {},
-              "classList": [
-                "detail_2"
-              ],
-              "shown": function () {return this.description},
-              "children": [
-                {
-                  "type": "text",
-                  "attr": {
-                    "value": "内容简介"
-                  },
-                  "classList": [
-                    "detail_title"
-                  ]
-                },
-                {
-                  "type": "text",
-                  "attr": {
-                    "value": function () {return this.description}
-                  },
-                  "classList": [
-                    "detail_info"
-                  ]
-                }
-              ]
-            },
-            {
-              "type": "div",
-              "attr": {},
-              "classList": [
-                "episode_container"
-              ],
-              "children": [
-                {
-                  "type": "text",
-                  "attr": {
-                    "value": function () {return '剧集 (' + (this.currentIndex+1) + '/' + (this.videoList.length) + ')'}
-                  },
-                  "classList": [
-                    "title"
-                  ]
-                },
-                {
-                  "type": "list",
-                  "attr": {
-                    "id": "list"
-                  },
-                  "classList": [
-                    "episode_lists"
-                  ],
-                  "id": "list",
-                  "events": {
-                    "scrollbottom": "loadMoreData"
-                  },
-                  "children": [
-                    {
-                      "type": "block",
-                      "attr": {},
-                      "repeat": {
-                        "exp": function () {return this.videoList},
-                        "key": "index",
-                        "value": "item"
-                      },
-                      "children": [
-                        {
-                          "type": "list-item",
-                          "attr": {
-                            "type": "episode"
-                          },
-                          "events": {
-                            "click": function (evt) {this.tapItem(this.index,evt)}
-                          },
-                          "children": [
-                            {
-                              "type": "stack",
-                              "attr": {},
-                              "children": [
-                                {
-                                  "type": "div",
-                                  "attr": {},
-                                  "classList": [
-                                    "episode_item"
-                                  ],
-                                  "children": [
-                                    {
-                                      "type": "image",
-                                      "attr": {
-                                        "src": function () {return this.item.poster_url}
-                                      },
-                                      "classList": [
-                                        "wrap_img"
-                                      ]
-                                    },
-                                    {
-                                      "type": "text",
-                                      "attr": {
-                                        "value": function () {return this.item.title}
-                                      },
-                                      "classList": [
-                                        "text"
-                                      ]
-                                    }
-                                  ]
-                                },
-                                {
-                                  "type": "div",
-                                  "attr": {},
-                                  "classList": [
-                                    "bg"
-                                  ]
-                                },
-                                {
-                                  "type": "div",
-                                  "attr": {},
-                                  "classList": function () {return ['episode_item', this.index===this.currentIndex?'active':'']}
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    }
-  ]
-}
-
-/***/ }),
-
-/***/ 38:
+/***/ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/style-loader.js?index=0&type=style!./node_modules/less-loader/dist/cjs.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=style!./src/pages/album/video/index.ux?uxType=page":
+/*!********************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/style-loader.js?index=0&type=style!./node_modules/less-loader/dist/cjs.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=style!./src/pages/album/video/index.ux?uxType=page ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -2000,34 +1689,334 @@ module.exports = {
 
 /***/ }),
 
-/***/ 39:
+/***/ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/template-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=template!./src/pages/album/video/index.ux?uxType=page&":
+/*!*****************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/template-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=template!./src/pages/album/video/index.ux?uxType=page& ***!
+  \*****************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = {
+  "type": "div",
+  "attr": {},
+  "classList": [
+    "video_page",
+    "page_container"
+  ],
+  "children": [
+    {
+      "type": "stack",
+      "attr": {},
+      "classList": [
+        "video_container"
+      ],
+      "children": [
+        {
+          "type": "video",
+          "attr": {
+            "src": function () {return this.videoList[this.currentIndex].video_src},
+            "poster": function () {return this.videoList[this.currentIndex].poster_url},
+            "controls": "true",
+            "autoplay": "true"
+          },
+          "shown": function () {return this.videoList.length&&this.isPlay},
+          "events": {
+            "finish": "bindended"
+          }
+        },
+        {
+          "type": "stack",
+          "attr": {},
+          "classList": [
+            "mask"
+          ],
+          "shown": function () {return !this.isPlay},
+          "children": [
+            {
+              "type": "image",
+              "attr": {
+                "src": "http://c2.h54hterh.top/manage/thumbnail/01c650ee376e77567f336b3b2ac23f7f.jpeg"
+              },
+              "classList": [
+                "bg"
+              ]
+            },
+            {
+              "type": "image",
+              "attr": {
+                "src": "http://c2.h54hterh.top/manage/thumbnail/b4f6e786166365f446880811447971bb.png"
+              },
+              "classList": [
+                "btn"
+              ],
+              "events": {
+                "click": "play"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "div",
+      "attr": {},
+      "classList": [
+        "main"
+      ],
+      "children": [
+        {
+          "type": "div",
+          "attr": {},
+          "classList": [
+            "info"
+          ],
+          "children": [
+            {
+              "type": "div",
+              "attr": {},
+              "classList": [
+                "detail_1"
+              ],
+              "children": [
+                {
+                  "type": "div",
+                  "attr": {},
+                  "classList": [
+                    "left"
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "attr": {
+                        "value": function () {return this.album_name}
+                      },
+                      "classList": [
+                        "title"
+                      ]
+                    },
+                    {
+                      "type": "div",
+                      "attr": {},
+                      "classList": [
+                        "c_desc"
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "attr": {
+                            "value": "动画"
+                          },
+                          "classList": [
+                            "classify"
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "attr": {
+                            "value": function () {return '' + '/ ' + (this.source) + ' /'}
+                          },
+                          "classList": [
+                            "source"
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "attr": {
+                            "value": function () {return '' + (this.play_count) + '次观看'}
+                          },
+                          "classList": [
+                            "play_count"
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "image",
+                  "attr": {
+                    "src": "/common/image/wx.svg"
+                  },
+                  "classList": [
+                    "share",
+                    "xbtn"
+                  ],
+                  "events": {
+                    "click": "share"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "div",
+              "attr": {},
+              "classList": [
+                "detail_2"
+              ],
+              "shown": function () {return this.description},
+              "children": [
+                {
+                  "type": "text",
+                  "attr": {
+                    "value": "内容简介"
+                  },
+                  "classList": [
+                    "detail_title"
+                  ]
+                },
+                {
+                  "type": "text",
+                  "attr": {
+                    "value": function () {return this.description}
+                  },
+                  "classList": [
+                    "detail_info"
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "div",
+              "attr": {},
+              "classList": [
+                "episode_container"
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "attr": {
+                    "value": function () {return '' + '剧集 (' + (this.currentIndex+1) + '/' + (this.videoList.length) + ')'}
+                  },
+                  "classList": [
+                    "title"
+                  ]
+                },
+                {
+                  "type": "list",
+                  "attr": {
+                    "id": "list"
+                  },
+                  "classList": [
+                    "episode_lists"
+                  ],
+                  "id": "list",
+                  "events": {
+                    "scrollbottom": "loadMoreData"
+                  },
+                  "children": [
+                    {
+                      "type": "block",
+                      "attr": {},
+                      "repeat": {
+                        "exp": function () {return this.videoList},
+                        "key": "index",
+                        "value": "item"
+                      },
+                      "children": [
+                        {
+                          "type": "list-item",
+                          "attr": {
+                            "type": "episode"
+                          },
+                          "events": {
+                            "click": function (evt) {this.tapItem(this.index,evt)}
+                          },
+                          "children": [
+                            {
+                              "type": "stack",
+                              "attr": {},
+                              "children": [
+                                {
+                                  "type": "div",
+                                  "attr": {},
+                                  "classList": [
+                                    "episode_item"
+                                  ],
+                                  "children": [
+                                    {
+                                      "type": "image",
+                                      "attr": {
+                                        "src": function () {return this.item.poster_url}
+                                      },
+                                      "classList": [
+                                        "wrap_img"
+                                      ]
+                                    },
+                                    {
+                                      "type": "text",
+                                      "attr": {
+                                        "value": function () {return this.item.title}
+                                      },
+                                      "classList": [
+                                        "text"
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "div",
+                                  "attr": {},
+                                  "classList": [
+                                    "bg"
+                                  ]
+                                },
+                                {
+                                  "type": "div",
+                                  "attr": {},
+                                  "classList": function () {return ['episode_item', this.index===this.currentIndex?'active':'']}
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+
+/***/ }),
+
+/***/ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/script-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/module-loader.js!./node_modules/babel-loader/lib/index.js?cwd=/Users/lijun/Downloads/complaint/babySongQuickapp&plugins[]=/Users/lijun/Downloads/complaint/babySongQuickapp/node_modules/@hap-toolkit/dsl-xvm/lib/loader/babel-plugin-jsx.js&comments=false!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/access-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=script!./src/pages/album/video/index.ux?uxType=page":
+/*!****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/@hap-toolkit/dsl-xvm/lib/loader/script-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/module-loader.js!./node_modules/babel-loader/lib?cwd=/Users/lijun/Downloads/complaint/babySongQuickapp&plugins[]=/Users/lijun/Downloads/complaint/babySongQuickapp/node_modules/@hap-toolkit/dsl-xvm/lib/loader/babel-plugin-jsx.js&comments=false!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/access-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=script!./src/pages/album/video/index.ux?uxType=page ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = function(module, exports, $app_require$){'use strict';
+module.exports = function __scriptModule__ (module, exports, $app_require$){"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports["default"] = void 0;
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+var _album = __webpack_require__(/*! ../../../api/album */ "./src/api/album.js");
 
-var _album = __webpack_require__(10);
+var _util = _interopRequireDefault(__webpack_require__(/*! ../../../common/js/util */ "./src/common/js/util.js"));
 
-var _util = __webpack_require__(8);
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-var _util2 = _interopRequireDefault(_util);
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-exports.default = {
-  protected: {
+var _default = {
+  "protected": {
     defaultIndex: '',
     title: '',
     album_id: ''
   },
-  private: {
+  "private": {
     isPlay: false,
     album_name: '',
     thumbnail: '',
@@ -2038,10 +2027,14 @@ exports.default = {
     videoList: []
   },
   onInit: function onInit() {
-    this.$page.setTitleBar({ text: decodeURIComponent(this.title) });
+    this.$page.setTitleBar({
+      text: decodeURIComponent(this.title)
+    });
+
     if (this.defaultIndex) {
       this.currentIndex = this.defaultIndex;
     }
+
     this.getList();
   },
   onShow: function onShow() {
@@ -2085,7 +2078,7 @@ exports.default = {
     }
   },
   getList: function () {
-    var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
+    var _getList = _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
       var _this2 = this;
 
       return regeneratorRuntime.wrap(function _callee$(_context) {
@@ -2099,7 +2092,7 @@ exports.default = {
                 _this2.thumbnail = data.thumbnail || data.image;
                 _this2.source = '熊宝儿歌故事';
                 _this2.description = data.description;
-                data.play_count ? _this2.play_count = _util2.default.numW(data.play_count) : _this2.play_count = _util2.default.numW(_util2.default.randomNum(5000, 999999));
+                data.play_count ? _this2.play_count = _util["default"].numW(data.play_count) : _this2.play_count = _util["default"].numW(_util["default"].randomNum(5000, 999999));
                 _this2.videoList = data.artilces.map(function (v) {
                   return {
                     title: v.title,
@@ -2109,15 +2102,16 @@ exports.default = {
                 });
 
                 _this2.$forceUpdate();
+
                 _this2.goIndex();
-              }).catch(function (res) {
+              })["catch"](function (res) {
                 _this2.$app.$def.prompt.showToast({
                   message: '网络异常,一会再试试！'
                 });
               });
 
             case 2:
-            case 'end':
+            case "end":
               return _context.stop();
           }
         }
@@ -2125,7 +2119,7 @@ exports.default = {
     }));
 
     function getList() {
-      return _ref.apply(this, arguments);
+      return _getList.apply(this, arguments);
     }
 
     return getList;
@@ -2141,7 +2135,10 @@ exports.default = {
     this.goIndex();
   },
   goIndex: function goIndex() {
-    this.$element('list').scrollTo({ index: this.currentIndex, smooth: true });
+    this.$element('list').scrollTo({
+      index: this.currentIndex,
+      smooth: true
+    });
   },
   share: function share() {
     this.$app.$def.shareWx();
@@ -2150,9 +2147,8 @@ exports.default = {
     this.$app.$def.showMenu();
   }
 };
-
-
-var moduleOwn = exports.default || module.exports;
+exports["default"] = _default;
+var moduleOwn = exports["default"] || module.exports;
 var accessors = ['public', 'protected', 'private'];
 
 if (moduleOwn.data && accessors.some(function (acc) {
@@ -2164,10 +2160,14 @@ if (moduleOwn.data && accessors.some(function (acc) {
   moduleOwn._descriptor = {};
   accessors.forEach(function (acc) {
     var accType = _typeof(moduleOwn[acc]);
+
     if (accType === 'object') {
       moduleOwn.data = Object.assign(moduleOwn.data, moduleOwn[acc]);
+
       for (var name in moduleOwn[acc]) {
-        moduleOwn._descriptor[name] = { access: acc };
+        moduleOwn._descriptor[name] = {
+          access: acc
+        };
       }
     } else if (accType === 'function') {
       console.warn('页面VM对象中的属性' + acc + '的值不能是函数，请使用对象');
@@ -2177,88 +2177,158 @@ if (moduleOwn.data && accessors.some(function (acc) {
 
 /***/ }),
 
-/***/ 8:
+/***/ "./src/api/album.js":
+/*!**************************!*\
+  !*** ./src/api/album.js ***!
+  \**************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
+exports.getAlbum = getAlbum;
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+function getAlbum(album_id) {
+  var page_no = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+  var page_size = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
+  var params = {
+    album_id: album_id,
+    page_no: page_no,
+    page_size: page_size
+  };
+  return $http.get('/v1/album', params);
+}
+
+/***/ }),
+
+/***/ "./src/common/js/util.js":
+/*!*******************************!*\
+  !*** ./src/common/js/util.js ***!
+  \*******************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var util = function () {
-    function util() {
-        _classCallCheck(this, util);
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var util =
+/*#__PURE__*/
+function () {
+  function util() {
+    _classCallCheck(this, util);
+  }
+
+  _createClass(util, null, [{
+    key: "randomNum",
+    value: function randomNum(Min, Max) {
+      // 随机数
+      var Range = Max - Min;
+      var Rand = Math.random();
+      var num = Min + Math.round(Rand * Range); //四舍五入
+
+      return num;
     }
+  }, {
+    key: "numW",
+    value: function numW(num) {
+      if (num >= 10000) {
+        return Math.round(num / 10000 * 100) / 100 + '万';
+      }
 
-    _createClass(util, null, [{
-        key: 'randomNum',
-        value: function randomNum(Min, Max) {
-            // 随机数
-            var Range = Max - Min;
-            var Rand = Math.random();
-            var num = Min + Math.round(Rand * Range); //四舍五入
-            return num;
-        }
-    }, {
-        key: 'numW',
-        value: function numW(num) {
-            if (num >= 10000) {
-                return Math.round(num / 10000 * 100) / 100 + '万';
-            }
-            return num;
-        }
-    }, {
-        key: 'formatSeconds',
-        value: function formatSeconds(seconds) {
-            // 时间转换 hh:mm:ss
-            // 时间
-            var ss = parseInt(seconds); // 秒
-            var mm = 0; // 分
-            var hh = 0; // 小时
-            if (ss > 60) {
-                mm = parseInt(ss / 60);
-                ss = parseInt(ss % 60);
-            }
-            if (mm > 60) {
-                hh = parseInt(mm / 60);
-                mm = parseInt(mm % 60);
-            }
-            var result = ('00' + parseInt(ss)).slice(-2);
-            if (mm > 0) {
-                result = ('00' + parseInt(mm)).slice(-2) + ':' + result;
-            } else {
-                result = '00:' + result;
-            }
-            if (hh > 0) {
-                result = ('00' + parseInt(hh)).slice(-2) + ':' + result;
-            }
-            return result;
-        }
-        /* eslint-disable */
+      return num;
+    }
+  }, {
+    key: "formatSeconds",
+    value: function formatSeconds(seconds) {
+      // 时间转换 hh:mm:ss
+      // 时间
+      var ss = parseInt(seconds); // 秒
 
-    }, {
-        key: 'setConsole',
-        value: function setConsole() {
-            var text = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'this is console!';
-            var isOneLine = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
-            var author = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'GordanLee(github.com/lishuaixingNewBee)';
+      var mm = 0; // 分
 
-            console.warn(text + '  ---  ' + author);
-        }
-    }]);
+      var hh = 0; // 小时
 
-    return util;
+      if (ss > 60) {
+        mm = parseInt(ss / 60);
+        ss = parseInt(ss % 60);
+      }
+
+      if (mm > 60) {
+        hh = parseInt(mm / 60);
+        mm = parseInt(mm % 60);
+      }
+
+      var result = ('00' + parseInt(ss)).slice(-2);
+
+      if (mm > 0) {
+        result = ('00' + parseInt(mm)).slice(-2) + ':' + result;
+      } else {
+        result = '00:' + result;
+      }
+
+      if (hh > 0) {
+        result = ('00' + parseInt(hh)).slice(-2) + ':' + result;
+      }
+
+      return result;
+    }
+    /* eslint-disable */
+
+  }, {
+    key: "setConsole",
+    value: function setConsole() {
+      var text = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'this is console!';
+      var isOneLine = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+      var author = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'GordanLee(github.com/lishuaixingNewBee)';
+      console.warn("".concat(text, "  ---  ").concat(author));
+    }
+  }]);
+
+  return util;
 }();
 
-exports.default = util;
-
+exports["default"] = util;
 util.setConsole('李帅醒Plus+狗蛋实验室-基于quickapp开发');
+
+/***/ }),
+
+/***/ "./src/pages/album/video/index.ux?uxType=page":
+/*!****************************************************!*\
+  !*** ./src/pages/album/video/index.ux?uxType=page ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var $app_template$ = __webpack_require__(/*! !../../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!../../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/template-loader.js!../../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=template!./index.ux?uxType=page& */ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/template-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=template!./src/pages/album/video/index.ux?uxType=page&")
+var $app_style$ = __webpack_require__(/*! !../../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!../../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/style-loader.js?index=0&type=style!less-loader!../../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=style!./index.ux?uxType=page */ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/style-loader.js?index=0&type=style!./node_modules/less-loader/dist/cjs.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=style!./src/pages/album/video/index.ux?uxType=page")
+var $app_script$ = __webpack_require__(/*! !../../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/script-loader.js!../../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/module-loader.js!../../../../node_modules/babel-loader?cwd=/Users/lijun/Downloads/complaint/babySongQuickapp&plugins[]=/Users/lijun/Downloads/complaint/babySongQuickapp/node_modules/@hap-toolkit/dsl-xvm/lib/loader/babel-plugin-jsx.js&comments=false!../../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/access-loader.js!../../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=script!./index.ux?uxType=page */ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/script-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/module-loader.js!./node_modules/babel-loader/lib/index.js?cwd=/Users/lijun/Downloads/complaint/babySongQuickapp&plugins[]=/Users/lijun/Downloads/complaint/babySongQuickapp/node_modules/@hap-toolkit/dsl-xvm/lib/loader/babel-plugin-jsx.js&comments=false!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/access-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=script!./src/pages/album/video/index.ux?uxType=page")
+
+$app_define$('@app-component/index', [], function($app_require$, $app_exports$, $app_module$){
+     $app_script$($app_module$, $app_exports$, $app_require$)
+     if ($app_exports$.__esModule && $app_exports$.default) {
+            $app_module$.exports = $app_exports$.default
+        }
+     $app_module$.exports.template = $app_template$
+     $app_module$.exports.style = $app_style$
+})
+
+$app_bootstrap$('@app-component/index',{ packagerVersion: '0.4.3'})
+
 
 /***/ })
 

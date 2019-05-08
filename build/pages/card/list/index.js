@@ -39,12 +39,32 @@
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, {
-/******/ 				configurable: false,
-/******/ 				enumerable: true,
-/******/ 				get: getter
-/******/ 			});
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
 /******/ 		}
+/******/ 	};
+/******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
 /******/ 	};
 /******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
@@ -62,284 +82,18 @@
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "";
 /******/
+/******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 40);
+/******/ 	return __webpack_require__(__webpack_require__.s = "./src/pages/card/list/index.ux?uxType=page");
 /******/ })
 /************************************************************************/
-/******/ ([
-/* 0 */
-/***/ (function(module, exports, __webpack_require__) {
+/******/ ({
 
-var $app_template$ = __webpack_require__(1)
-var $app_style$ = __webpack_require__(2)
-var $app_script$ = __webpack_require__(3)
-
-$app_define$('@app-component/min-play', [], function($app_require$, $app_exports$, $app_module$){
-     $app_script$($app_module$, $app_exports$, $app_require$)
-     if ($app_exports$.__esModule && $app_exports$.default) {
-            $app_module$.exports = $app_exports$.default
-        }
-     $app_module$.exports.template = $app_template$
-     $app_module$.exports.style = $app_style$
-})
-
-
-/***/ }),
-/* 1 */
-/***/ (function(module, exports) {
-
-module.exports = {
-  "type": "block",
-  "attr": {},
-  "children": [
-    {
-      "type": "div",
-      "attr": {},
-      "classList": [
-        "minPlay_container",
-        "minPlay-show"
-      ],
-      "shown": function () {return this.visible},
-      "children": [
-        {
-          "type": "image",
-          "attr": {
-            "src": "/common/image/music4.svg"
-          },
-          "classList": function () {return [this.isplaying?'musicisplay':'']},
-          "events": {
-            "click": "open"
-          }
-        }
-      ]
-    }
-  ]
-}
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports) {
-
-module.exports = {
-  ".page_container": {
-    "flexDirection": "column",
-    "height": "100%"
-  },
-  "@KEYFRAMES": {
-    "rotate": [
-      {
-        "transform": "{\"rotate\":\"10deg\"}",
-        "time": 0
-      },
-      {
-        "transform": "{\"rotate\":\"360deg\"}",
-        "time": 100
-      }
-    ],
-    "bottomdrawerenter": [
-      {
-        "transform": "{\"translateY\":\"236px\"}",
-        "time": 0
-      },
-      {
-        "transform": "{\"translateY\":\"0px\"}",
-        "time": 100
-      }
-    ]
-  },
-  "text": {
-    "color": "#000000"
-  },
-  ".minPlay_container": {
-    "width": "76px",
-    "height": "76px",
-    "position": "fixed",
-    "borderRadius": "38px",
-    "bottom": "160px",
-    "right": "25px",
-    "zIndex": 1,
-    "backgroundColor": "#ffffff",
-    "transform": "{\"translateY\":\"236px\"}"
-  },
-  ".minPlay_container image": {
-    "width": "100%",
-    "height": "100%",
-    "borderRadius": "38px",
-    "_meta": {
-      "ruleDef": [
-        {
-          "t": "a",
-          "n": "class",
-          "i": false,
-          "a": "element",
-          "v": "minPlay_container"
-        },
-        {
-          "t": "d"
-        },
-        {
-          "t": "t",
-          "n": "image"
-        }
-      ]
-    }
-  },
-  ".minPlay-show": {
-    "animationName": "bottomdrawerenter",
-    "animationFillMode": "forwards",
-    "animationDuration": "300ms",
-    "animationTimingFunction": "linear"
-  },
-  ".musicisplay": {
-    "animationName": "rotate",
-    "animationDuration": "3000ms",
-    "animationTimingFunction": "linear",
-    "animationIterationCount": -1
-  }
-}
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports) {
-
-module.exports = function(module, exports, $app_require$){'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = {
-  props: {
-    isplaying: {
-      type: Boolean,
-      default: true
-    }
-  },
-  data: function data() {
-    return {
-      visible: false
-    };
-  },
-  onInit: function onInit() {
-    if (this.$app.$def.musicData.list.length) {
-      this.visible = true;
-    }
-  },
-  open: function open() {
-    this.$app.$def.router.push({
-      uri: '/pages/play'
-    });
-  }
-};}
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var $app_template$ = __webpack_require__(5)
-var $app_style$ = __webpack_require__(6)
-var $app_script$ = __webpack_require__(7)
-
-$app_define$('@app-component/load-more', [], function($app_require$, $app_exports$, $app_module$){
-     $app_script$($app_module$, $app_exports$, $app_require$)
-     if ($app_exports$.__esModule && $app_exports$.default) {
-            $app_module$.exports = $app_exports$.default
-        }
-     $app_module$.exports.template = $app_template$
-     $app_module$.exports.style = $app_style$
-})
-
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports) {
-
-module.exports = {
-  "type": "block",
-  "attr": {},
-  "children": [
-    {
-      "type": "list-item",
-      "attr": {
-        "type": "loadMore"
-      },
-      "classList": [
-        "load-more"
-      ],
-      "children": [
-        {
-          "type": "div",
-          "attr": {},
-          "classList": [
-            "load-more-loading"
-          ],
-          "shown": function () {return this.hasMore},
-          "children": [
-            {
-              "type": "progress",
-              "attr": {
-                "type": "circular"
-              }
-            },
-            {
-              "type": "text",
-              "attr": {
-                "value": "玩命加载中..."
-              }
-            }
-          ]
-        },
-        {
-          "type": "div",
-          "attr": {},
-          "classList": [
-            "load-nomore"
-          ],
-          "shown": function () {return (!this.hasMore)&&!(this.hasMore)},
-          "children": [
-            {
-              "type": "div",
-              "attr": {},
-              "classList": [
-                "line"
-              ]
-            },
-            {
-              "type": "div",
-              "attr": {},
-              "classList": [
-                "content"
-              ],
-              "children": [
-                {
-                  "type": "image",
-                  "attr": {
-                    "src": "/common/image/nomore.png"
-                  }
-                },
-                {
-                  "type": "text",
-                  "attr": {
-                    "value": "汪～木有了！"
-                  }
-                }
-              ]
-            },
-            {
-              "type": "div",
-              "attr": {},
-              "classList": [
-                "line"
-              ]
-            }
-          ]
-        }
-      ]
-    }
-  ]
-}
-
-/***/ }),
-/* 6 */
+/***/ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/style-loader.js?index=0&type=style!./node_modules/less-loader/dist/cjs.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=style!./src/components/load-more/index.ux?uxType=comp":
+/*!***********************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/style-loader.js?index=0&type=style!./node_modules/less-loader/dist/cjs.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=style!./src/components/load-more/index.ux?uxType=comp ***!
+  \***********************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -557,77 +311,12 @@ module.exports = {
 }
 
 /***/ }),
-/* 7 */
-/***/ (function(module, exports) {
 
-module.exports = function(module, exports, $app_require$){"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = {
-  props: {
-    hasMore: {
-      type: Boolean,
-      default: true
-    }
-  },
-  data: function data() {
-    return {};
-  }
-};}
-
-/***/ }),
-/* 8 */,
-/* 9 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var $app_template$ = __webpack_require__(11)
-var $app_style$ = __webpack_require__(12)
-var $app_script$ = __webpack_require__(13)
-
-$app_define$('@app-component/loading-view', [], function($app_require$, $app_exports$, $app_module$){
-     $app_script$($app_module$, $app_exports$, $app_require$)
-     if ($app_exports$.__esModule && $app_exports$.default) {
-            $app_module$.exports = $app_exports$.default
-        }
-     $app_module$.exports.template = $app_template$
-     $app_module$.exports.style = $app_style$
-})
-
-
-/***/ }),
-/* 10 */,
-/* 11 */
-/***/ (function(module, exports) {
-
-module.exports = {
-  "type": "div",
-  "attr": {},
-  "classList": [
-    "wrap_loading"
-  ],
-  "children": [
-    {
-      "type": "div",
-      "attr": {},
-      "classList": [
-        "content"
-      ],
-      "children": [
-        {
-          "type": "image",
-          "attr": {
-            "src": "http://c2.h54hterh.top/manage/thumbnail/7d4d21c0f604ccc7f984c4950265cc03.gif"
-          }
-        }
-      ]
-    }
-  ]
-}
-
-/***/ }),
-/* 12 */
+/***/ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/style-loader.js?index=0&type=style!./node_modules/less-loader/dist/cjs.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=style!./src/components/loading/index.ux?uxType=comp":
+/*!*********************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/style-loader.js?index=0&type=style!./node_modules/less-loader/dist/cjs.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=style!./src/components/loading/index.ux?uxType=comp ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -698,246 +387,99 @@ module.exports = {
 }
 
 /***/ }),
-/* 13 */
-/***/ (function(module, exports) {
 
-module.exports = function(module, exports, $app_require$){"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = {
-  props: {},
-  data: function data() {
-    return {};
-  },
-  onInit: function onInit() {}
-};}
-
-/***/ }),
-/* 14 */,
-/* 15 */,
-/* 16 */,
-/* 17 */,
-/* 18 */,
-/* 19 */,
-/* 20 */,
-/* 21 */,
-/* 22 */,
-/* 23 */,
-/* 24 */,
-/* 25 */,
-/* 26 */,
-/* 27 */,
-/* 28 */,
-/* 29 */,
-/* 30 */,
-/* 31 */,
-/* 32 */,
-/* 33 */,
-/* 34 */,
-/* 35 */,
-/* 36 */,
-/* 37 */,
-/* 38 */,
-/* 39 */,
-/* 40 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(9)
-__webpack_require__(0)
-__webpack_require__(4)
-var $app_template$ = __webpack_require__(41)
-var $app_style$ = __webpack_require__(42)
-var $app_script$ = __webpack_require__(43)
-
-$app_define$('@app-component/index', [], function($app_require$, $app_exports$, $app_module$){
-     $app_script$($app_module$, $app_exports$, $app_require$)
-     if ($app_exports$.__esModule && $app_exports$.default) {
-            $app_module$.exports = $app_exports$.default
-        }
-     $app_module$.exports.template = $app_template$
-     $app_module$.exports.style = $app_style$
-})
-
-$app_bootstrap$('@app-component/index',{ packagerVersion: '0.0.5'})
-
-
-/***/ }),
-/* 41 */
+/***/ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/style-loader.js?index=0&type=style!./node_modules/less-loader/dist/cjs.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=style!./src/components/minplay/index.ux?uxType=comp":
+/*!*********************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/style-loader.js?index=0&type=style!./node_modules/less-loader/dist/cjs.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=style!./src/components/minplay/index.ux?uxType=comp ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
 /***/ (function(module, exports) {
 
 module.exports = {
-  "type": "div",
-  "attr": {},
-  "classList": [
-    "list_page",
-    "page_container"
-  ],
-  "children": [
-    {
-      "type": "refresh",
-      "attr": {
-        "refreshing": function () {return this.isRefresh}
+  ".page_container": {
+    "flexDirection": "column",
+    "height": "100%"
+  },
+  "@KEYFRAMES": {
+    "rotate": [
+      {
+        "transform": "{\"rotate\":\"10deg\"}",
+        "time": 0
       },
-      "events": {
-        "refresh": "onPullDownRefresh"
+      {
+        "transform": "{\"rotate\":\"360deg\"}",
+        "time": 100
+      }
+    ],
+    "bottomdrawerenter": [
+      {
+        "transform": "{\"translateY\":\"236px\"}",
+        "time": 0
       },
-      "children": [
+      {
+        "transform": "{\"translateY\":\"0px\"}",
+        "time": 100
+      }
+    ]
+  },
+  "text": {
+    "color": "#000000"
+  },
+  ".minPlay_container": {
+    "width": "76px",
+    "height": "76px",
+    "position": "fixed",
+    "borderRadius": "38px",
+    "bottom": "160px",
+    "right": "25px",
+    "zIndex": 1,
+    "backgroundColor": "#ffffff",
+    "transform": "{\"translateY\":\"236px\"}"
+  },
+  ".minPlay_container image": {
+    "width": "100%",
+    "height": "100%",
+    "borderRadius": "38px",
+    "_meta": {
+      "ruleDef": [
         {
-          "type": "list",
-          "attr": {},
-          "shown": function () {return this.list.length},
-          "classList": [
-            "list_wrap"
-          ],
-          "events": {
-            "scrollbottom": "loadMoreData"
-          },
-          "children": [
-            {
-              "type": "block",
-              "attr": {},
-              "repeat": {
-                "exp": function () {return this.list},
-                "key": "index",
-                "value": "item"
-              },
-              "children": [
-                {
-                  "type": "list-item",
-                  "attr": {
-                    "type": "product"
-                  },
-                  "classList": [
-                    "content-item"
-                  ],
-                  "events": {
-                    "click": function (evt) {this.bindViewTap(this.item.album,evt)}
-                  },
-                  "children": [
-                    {
-                      "type": "div",
-                      "attr": {},
-                      "classList": function () {return ['item_container', this.index===0?'first_item':'']},
-                      "children": [
-                        {
-                          "type": "div",
-                          "attr": {},
-                          "classList": [
-                            "item"
-                          ],
-                          "children": [
-                            {
-                              "type": "stack",
-                              "attr": {},
-                              "classList": function () {return ['wrap_img', this.item.album.type==='video'?'video_img':'']},
-                              "children": [
-                                {
-                                  "type": "image",
-                                  "attr": {
-                                    "src": function () {return this.item.album.thumbnail?this.item.album.thumbnail:this.item.album.image}
-                                  },
-                                  "classList": [
-                                    "img"
-                                  ]
-                                },
-                                {
-                                  "type": "div",
-                                  "attr": {},
-                                  "classList": [
-                                    "count_box"
-                                  ],
-                                  "children": [
-                                    {
-                                      "type": "image",
-                                      "attr": {
-                                        "src": function () {return this.item.album.type==='video'?'/common/image/video.svg':'/common/image/music.svg'}
-                                      },
-                                      "classList": [
-                                        "icon"
-                                      ]
-                                    },
-                                    {
-                                      "type": "div",
-                                      "attr": {},
-                                      "classList": function () {return [this.item.album.type==='video'?'icon-play':'icon-music2']}
-                                    },
-                                    {
-                                      "type": "text",
-                                      "attr": {
-                                        "value": function () {return (this.item.album.item_count) + (this.item.album.type==='video'?'集':'首')}
-                                      },
-                                      "classList": [
-                                        "num"
-                                      ]
-                                    }
-                                  ]
-                                }
-                              ]
-                            },
-                            {
-                              "type": "div",
-                              "attr": {},
-                              "classList": [
-                                "desc"
-                              ],
-                              "children": [
-                                {
-                                  "type": "text",
-                                  "attr": {
-                                    "value": function () {return this.item.album.album_name}
-                                  },
-                                  "classList": [
-                                    "title"
-                                  ]
-                                },
-                                {
-                                  "type": "text",
-                                  "attr": {
-                                    "value": function () {return this.item.album.description}
-                                  },
-                                  "classList": [
-                                    "text"
-                                  ]
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              "type": "load-more",
-              "attr": {
-                "hasMore": function () {return this.hasMore}
-              }
-            }
-          ]
+          "t": "a",
+          "n": "class",
+          "i": false,
+          "a": "element",
+          "v": "minPlay_container"
+        },
+        {
+          "t": "d"
+        },
+        {
+          "t": "t",
+          "n": "image"
         }
       ]
-    },
-    {
-      "type": "loading-view",
-      "attr": {},
-      "shown": function () {return !this.list.length}
-    },
-    {
-      "type": "min-play",
-      "attr": {
-        "isplaying": function () {return this.isplaying}
-      },
-      "shown": function () {return this.minplayVisible}
     }
-  ]
+  },
+  ".minPlay-show": {
+    "animationName": "bottomdrawerenter",
+    "animationFillMode": "forwards",
+    "animationDuration": "300ms",
+    "animationTimingFunction": "linear"
+  },
+  ".musicisplay": {
+    "animationName": "rotate",
+    "animationDuration": "3000ms",
+    "animationTimingFunction": "linear",
+    "animationIterationCount": -1
+  }
 }
 
 /***/ }),
-/* 42 */
+
+/***/ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/style-loader.js?index=0&type=style!./node_modules/less-loader/dist/cjs.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=style!./src/pages/card/list/index.ux?uxType=page":
+/*!******************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/style-loader.js?index=0&type=style!./node_modules/less-loader/dist/cjs.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=style!./src/pages/card/list/index.ux?uxType=page ***!
+  \******************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -1472,27 +1014,378 @@ module.exports = {
 }
 
 /***/ }),
-/* 43 */
+
+/***/ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/template-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=template!./src/components/load-more/index.ux?uxType=comp&":
+/*!********************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/template-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=template!./src/components/load-more/index.ux?uxType=comp& ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = {
+  "type": "block",
+  "attr": {},
+  "children": [
+    {
+      "type": "list-item",
+      "attr": {
+        "type": "loadMore"
+      },
+      "classList": [
+        "load-more"
+      ],
+      "children": [
+        {
+          "type": "div",
+          "attr": {},
+          "classList": [
+            "load-more-loading"
+          ],
+          "shown": function () {return this.hasMore},
+          "children": [
+            {
+              "type": "progress",
+              "attr": {
+                "type": "circular"
+              }
+            },
+            {
+              "type": "text",
+              "attr": {
+                "value": "玩命加载中..."
+              }
+            }
+          ]
+        },
+        {
+          "type": "div",
+          "attr": {},
+          "classList": [
+            "load-nomore"
+          ],
+          "shown": function () {return (!this.hasMore)&&!(this.hasMore)},
+          "children": [
+            {
+              "type": "div",
+              "attr": {},
+              "classList": [
+                "line"
+              ]
+            },
+            {
+              "type": "div",
+              "attr": {},
+              "classList": [
+                "content"
+              ],
+              "children": [
+                {
+                  "type": "image",
+                  "attr": {
+                    "src": "/common/image/nomore.png"
+                  }
+                },
+                {
+                  "type": "text",
+                  "attr": {
+                    "value": "汪～木有了！"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "div",
+              "attr": {},
+              "classList": [
+                "line"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+
+/***/ }),
+
+/***/ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/template-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=template!./src/components/loading/index.ux?uxType=comp&":
+/*!******************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/template-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=template!./src/components/loading/index.ux?uxType=comp& ***!
+  \******************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = {
+  "type": "div",
+  "attr": {},
+  "classList": [
+    "wrap_loading"
+  ],
+  "children": [
+    {
+      "type": "div",
+      "attr": {},
+      "classList": [
+        "content"
+      ],
+      "children": [
+        {
+          "type": "image",
+          "attr": {
+            "src": "http://c2.h54hterh.top/manage/thumbnail/7d4d21c0f604ccc7f984c4950265cc03.gif"
+          }
+        }
+      ]
+    }
+  ]
+}
+
+/***/ }),
+
+/***/ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/template-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=template!./src/components/minplay/index.ux?uxType=comp&":
+/*!******************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/template-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=template!./src/components/minplay/index.ux?uxType=comp& ***!
+  \******************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = {
+  "type": "block",
+  "attr": {},
+  "children": [
+    {
+      "type": "div",
+      "attr": {},
+      "classList": [
+        "minPlay_container",
+        "minPlay-show"
+      ],
+      "shown": function () {return this.visible},
+      "children": [
+        {
+          "type": "image",
+          "attr": {
+            "src": "/common/image/music4.svg"
+          },
+          "classList": function () {return [this.isplaying?'musicisplay':'']},
+          "events": {
+            "click": "open"
+          }
+        }
+      ]
+    }
+  ]
+}
+
+/***/ }),
+
+/***/ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/template-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=template!./src/pages/card/list/index.ux?uxType=page&importNames[]=loading-view,importNames[]=min-play,importNames[]=load-more":
+/*!****************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/template-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=template!./src/pages/card/list/index.ux?uxType=page&importNames[]=loading-view,importNames[]=min-play,importNames[]=load-more ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = {
+  "type": "div",
+  "attr": {},
+  "classList": [
+    "list_page",
+    "page_container"
+  ],
+  "children": [
+    {
+      "type": "refresh",
+      "attr": {
+        "refreshing": function () {return this.isRefresh}
+      },
+      "events": {
+        "refresh": "onPullDownRefresh"
+      },
+      "children": [
+        {
+          "type": "list",
+          "attr": {},
+          "shown": function () {return this.list.length},
+          "classList": [
+            "list_wrap"
+          ],
+          "events": {
+            "scrollbottom": "loadMoreData"
+          },
+          "children": [
+            {
+              "type": "block",
+              "attr": {},
+              "repeat": {
+                "exp": function () {return this.list},
+                "key": "index",
+                "value": "item"
+              },
+              "children": [
+                {
+                  "type": "list-item",
+                  "attr": {
+                    "type": "product"
+                  },
+                  "classList": [
+                    "content-item"
+                  ],
+                  "events": {
+                    "click": function (evt) {this.bindViewTap(this.item.album,evt)}
+                  },
+                  "children": [
+                    {
+                      "type": "div",
+                      "attr": {},
+                      "classList": function () {return ['item_container', this.index===0?'first_item':'']},
+                      "children": [
+                        {
+                          "type": "div",
+                          "attr": {},
+                          "classList": [
+                            "item"
+                          ],
+                          "children": [
+                            {
+                              "type": "stack",
+                              "attr": {},
+                              "classList": function () {return ['wrap_img', this.item.album.type==='video'?'video_img':'']},
+                              "children": [
+                                {
+                                  "type": "image",
+                                  "attr": {
+                                    "src": function () {return this.item.album.thumbnail?this.item.album.thumbnail:this.item.album.image}
+                                  },
+                                  "classList": [
+                                    "img"
+                                  ]
+                                },
+                                {
+                                  "type": "div",
+                                  "attr": {},
+                                  "classList": [
+                                    "count_box"
+                                  ],
+                                  "children": [
+                                    {
+                                      "type": "image",
+                                      "attr": {
+                                        "src": function () {return this.item.album.type==='video'?'/common/image/video.svg':'/common/image/music.svg'}
+                                      },
+                                      "classList": [
+                                        "icon"
+                                      ]
+                                    },
+                                    {
+                                      "type": "div",
+                                      "attr": {},
+                                      "classList": function () {return [this.item.album.type==='video'?'icon-play':'icon-music2']}
+                                    },
+                                    {
+                                      "type": "text",
+                                      "attr": {
+                                        "value": function () {return '' + (this.item.album.item_count) + (this.item.album.type==='video'?'集':'首')}
+                                      },
+                                      "classList": [
+                                        "num"
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": "div",
+                              "attr": {},
+                              "classList": [
+                                "desc"
+                              ],
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "attr": {
+                                    "value": function () {return this.item.album.album_name}
+                                  },
+                                  "classList": [
+                                    "title"
+                                  ]
+                                },
+                                {
+                                  "type": "text",
+                                  "attr": {
+                                    "value": function () {return this.item.album.description}
+                                  },
+                                  "classList": [
+                                    "text"
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "load-more",
+              "attr": {
+                "hasMore": function () {return this.hasMore}
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "loading-view",
+      "attr": {},
+      "shown": function () {return !this.list.length}
+    },
+    {
+      "type": "min-play",
+      "attr": {
+        "isplaying": function () {return this.isplaying}
+      },
+      "shown": function () {return this.minplayVisible}
+    }
+  ]
+}
+
+/***/ }),
+
+/***/ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/script-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/module-loader.js!./node_modules/babel-loader/lib/index.js?cwd=/Users/lijun/Downloads/complaint/babySongQuickapp&plugins[]=/Users/lijun/Downloads/complaint/babySongQuickapp/node_modules/@hap-toolkit/dsl-xvm/lib/loader/babel-plugin-jsx.js&comments=false!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/access-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=script!./src/pages/card/list/index.ux?uxType=page":
+/*!**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/@hap-toolkit/dsl-xvm/lib/loader/script-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/module-loader.js!./node_modules/babel-loader/lib?cwd=/Users/lijun/Downloads/complaint/babySongQuickapp&plugins[]=/Users/lijun/Downloads/complaint/babySongQuickapp/node_modules/@hap-toolkit/dsl-xvm/lib/loader/babel-plugin-jsx.js&comments=false!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/access-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=script!./src/pages/card/list/index.ux?uxType=page ***!
+  \**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = function(module, exports, $app_require$){'use strict';
+module.exports = function __scriptModule__ (module, exports, $app_require$){"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports["default"] = void 0;
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+var _list = __webpack_require__(/*! ../../../api/list */ "./src/api/list.js");
 
-var _list = __webpack_require__(44);
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
-exports.default = {
-  protected: {
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+var _default = {
+  "protected": {
     title: '',
     label: ''
   },
-  private: {
+  "private": {
     isplaying: true,
     minplayVisible: false,
     isLoading: false,
@@ -1504,7 +1397,9 @@ exports.default = {
   },
   onInit: function onInit() {
     this.audio = this.$app.$def.audio;
-    this.$page.setTitleBar({ text: decodeURIComponent(this.title) });
+    this.$page.setTitleBar({
+      text: decodeURIComponent(this.title)
+    });
     this.getList('down');
   },
   onShow: function onShow() {
@@ -1519,7 +1414,7 @@ exports.default = {
     this.$app.$def.audioHide.call(this);
   },
   getList: function () {
-    var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(type) {
+    var _getList = _asyncToGenerator(regeneratorRuntime.mark(function _callee(type) {
       var _this = this;
 
       return regeneratorRuntime.wrap(function _callee$(_context) {
@@ -1529,27 +1424,30 @@ exports.default = {
               if (type === 'down') {
                 this.page_no = 1;
               }
+
               this.isLoading = true;
               _context.next = 4;
               return (0, _list.getData)(this.label, this.page_no, this.page_size).then(function (res) {
                 _this.isLoading = false;
                 _this.page_no++;
+
                 if (res.data.length) {
                   _this.hasMore = true;
                   type === 'down' ? _this.list = res.data : _this.list = _this.list.concat(res.data);
                 } else {
                   _this.hasMore = false;
                 }
-              }).catch(function (res) {
+              })["catch"](function (res) {
                 _this.isLoading = false;
                 _this.isRefresh = false;
+
                 _this.$app.$def.prompt.showToast({
                   message: '服务器异常,一会再试试！'
                 });
               });
 
             case 4:
-            case 'end':
+            case "end":
               return _context.stop();
           }
         }
@@ -1557,18 +1455,20 @@ exports.default = {
     }));
 
     function getList(_x) {
-      return _ref.apply(this, arguments);
+      return _getList.apply(this, arguments);
     }
 
     return getList;
   }(),
   bindViewTap: function bindViewTap(option) {
     var uri = '';
+
     if (option.type === 'video') {
-      uri = '/pages/album/video';
+      uri = "/pages/album/video";
     } else if (option.type === 'audio') {
-      uri = '/pages/album/audio';
+      uri = "/pages/album/audio";
     }
+
     this.$app.$def.router.push({
       uri: uri,
       params: {
@@ -1583,6 +1483,7 @@ exports.default = {
     this.isRefresh = true;
     this.getList('down').then(function () {
       _this2.isRefresh = false;
+
       _this2.$app.$def.prompt.showToast({
         message: '数据更新成功'
       });
@@ -1592,15 +1493,15 @@ exports.default = {
     if (this.isLoading && !this.hasMore) {
       return;
     }
+
     this.getList('up');
   },
   onMenuPress: function onMenuPress() {
     this.$app.$def.showMenu();
   }
 };
-
-
-var moduleOwn = exports.default || module.exports;
+exports["default"] = _default;
+var moduleOwn = exports["default"] || module.exports;
 var accessors = ['public', 'protected', 'private'];
 
 if (moduleOwn.data && accessors.some(function (acc) {
@@ -1612,10 +1513,14 @@ if (moduleOwn.data && accessors.some(function (acc) {
   moduleOwn._descriptor = {};
   accessors.forEach(function (acc) {
     var accType = _typeof(moduleOwn[acc]);
+
     if (accType === 'object') {
       moduleOwn.data = Object.assign(moduleOwn.data, moduleOwn[acc]);
+
       for (var name in moduleOwn[acc]) {
-        moduleOwn._descriptor[name] = { access: acc };
+        moduleOwn._descriptor[name] = {
+          access: acc
+        };
       }
     } else if (accType === 'function') {
       console.warn('页面VM对象中的属性' + acc + '的值不能是函数，请使用对象');
@@ -1624,30 +1529,225 @@ if (moduleOwn.data && accessors.some(function (acc) {
 }}
 
 /***/ }),
-/* 44 */
+
+/***/ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/script-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/module-loader.js!./node_modules/babel-loader/lib/index.js?cwd=/Users/lijun/Downloads/complaint/babySongQuickapp&plugins[]=/Users/lijun/Downloads/complaint/babySongQuickapp/node_modules/@hap-toolkit/dsl-xvm/lib/loader/babel-plugin-jsx.js&comments=false!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=script!./src/components/load-more/index.ux?uxType=comp":
+/*!***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/@hap-toolkit/dsl-xvm/lib/loader/script-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/module-loader.js!./node_modules/babel-loader/lib?cwd=/Users/lijun/Downloads/complaint/babySongQuickapp&plugins[]=/Users/lijun/Downloads/complaint/babySongQuickapp/node_modules/@hap-toolkit/dsl-xvm/lib/loader/babel-plugin-jsx.js&comments=false!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=script!./src/components/load-more/index.ux?uxType=comp ***!
+  \***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = function __scriptModule__ (module, exports, $app_require$){"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
+var _default = {
+  props: {
+    hasMore: {
+      type: Boolean,
+      "default": true
+    }
+  },
+  data: function data() {
+    return {};
+  }
+};
+exports["default"] = _default;}
+
+/***/ }),
+
+/***/ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/script-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/module-loader.js!./node_modules/babel-loader/lib/index.js?cwd=/Users/lijun/Downloads/complaint/babySongQuickapp&plugins[]=/Users/lijun/Downloads/complaint/babySongQuickapp/node_modules/@hap-toolkit/dsl-xvm/lib/loader/babel-plugin-jsx.js&comments=false!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=script!./src/components/loading/index.ux?uxType=comp":
+/*!*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/@hap-toolkit/dsl-xvm/lib/loader/script-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/module-loader.js!./node_modules/babel-loader/lib?cwd=/Users/lijun/Downloads/complaint/babySongQuickapp&plugins[]=/Users/lijun/Downloads/complaint/babySongQuickapp/node_modules/@hap-toolkit/dsl-xvm/lib/loader/babel-plugin-jsx.js&comments=false!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=script!./src/components/loading/index.ux?uxType=comp ***!
+  \*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = function __scriptModule__ (module, exports, $app_require$){"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
+var _default = {
+  props: {},
+  data: function data() {
+    return {};
+  },
+  onInit: function onInit() {}
+};
+exports["default"] = _default;}
+
+/***/ }),
+
+/***/ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/script-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/module-loader.js!./node_modules/babel-loader/lib/index.js?cwd=/Users/lijun/Downloads/complaint/babySongQuickapp&plugins[]=/Users/lijun/Downloads/complaint/babySongQuickapp/node_modules/@hap-toolkit/dsl-xvm/lib/loader/babel-plugin-jsx.js&comments=false!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=script!./src/components/minplay/index.ux?uxType=comp":
+/*!*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/@hap-toolkit/dsl-xvm/lib/loader/script-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/module-loader.js!./node_modules/babel-loader/lib?cwd=/Users/lijun/Downloads/complaint/babySongQuickapp&plugins[]=/Users/lijun/Downloads/complaint/babySongQuickapp/node_modules/@hap-toolkit/dsl-xvm/lib/loader/babel-plugin-jsx.js&comments=false!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=script!./src/components/minplay/index.ux?uxType=comp ***!
+  \*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = function __scriptModule__ (module, exports, $app_require$){"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
+var _default = {
+  props: {
+    isplaying: {
+      type: Boolean,
+      "default": true
+    }
+  },
+  data: function data() {
+    return {
+      visible: false
+    };
+  },
+  onInit: function onInit() {
+    if (this.$app.$def.musicData.list.length) {
+      this.visible = true;
+    }
+  },
+  open: function open() {
+    this.$app.$def.router.push({
+      uri: '/pages/play'
+    });
+  }
+};
+exports["default"] = _default;}
+
+/***/ }),
+
+/***/ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/ux-loader.js?cwd=/Users/lijun/Downloads/complaint/babySongQuickapp&type=import!./src/components/load-more/index.ux?uxType=comp&name=load-more":
+/*!****************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/@hap-toolkit/dsl-xvm/lib/loader/ux-loader.js?cwd=/Users/lijun/Downloads/complaint/babySongQuickapp&type=import!./src/components/load-more/index.ux?uxType=comp&name=load-more ***!
+  \****************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var $app_template$ = __webpack_require__(/*! !../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/template-loader.js!../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=template!./index.ux?uxType=comp& */ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/template-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=template!./src/components/load-more/index.ux?uxType=comp&")
+var $app_style$ = __webpack_require__(/*! !../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/style-loader.js?index=0&type=style!less-loader!../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=style!./index.ux?uxType=comp */ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/style-loader.js?index=0&type=style!./node_modules/less-loader/dist/cjs.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=style!./src/components/load-more/index.ux?uxType=comp")
+var $app_script$ = __webpack_require__(/*! !../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/script-loader.js!../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/module-loader.js!../../../node_modules/babel-loader?cwd=/Users/lijun/Downloads/complaint/babySongQuickapp&plugins[]=/Users/lijun/Downloads/complaint/babySongQuickapp/node_modules/@hap-toolkit/dsl-xvm/lib/loader/babel-plugin-jsx.js&comments=false!../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=script!./index.ux?uxType=comp */ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/script-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/module-loader.js!./node_modules/babel-loader/lib/index.js?cwd=/Users/lijun/Downloads/complaint/babySongQuickapp&plugins[]=/Users/lijun/Downloads/complaint/babySongQuickapp/node_modules/@hap-toolkit/dsl-xvm/lib/loader/babel-plugin-jsx.js&comments=false!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=script!./src/components/load-more/index.ux?uxType=comp")
+
+$app_define$('@app-component/load-more', [], function($app_require$, $app_exports$, $app_module$){
+     $app_script$($app_module$, $app_exports$, $app_require$)
+     if ($app_exports$.__esModule && $app_exports$.default) {
+            $app_module$.exports = $app_exports$.default
+        }
+     $app_module$.exports.template = $app_template$
+     $app_module$.exports.style = $app_style$
+})
+
+
+/***/ }),
+
+/***/ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/ux-loader.js?cwd=/Users/lijun/Downloads/complaint/babySongQuickapp&type=import!./src/components/loading/index.ux?uxType=comp&name=loading-view":
+/*!*****************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/@hap-toolkit/dsl-xvm/lib/loader/ux-loader.js?cwd=/Users/lijun/Downloads/complaint/babySongQuickapp&type=import!./src/components/loading/index.ux?uxType=comp&name=loading-view ***!
+  \*****************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var $app_template$ = __webpack_require__(/*! !../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/template-loader.js!../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=template!./index.ux?uxType=comp& */ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/template-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=template!./src/components/loading/index.ux?uxType=comp&")
+var $app_style$ = __webpack_require__(/*! !../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/style-loader.js?index=0&type=style!less-loader!../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=style!./index.ux?uxType=comp */ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/style-loader.js?index=0&type=style!./node_modules/less-loader/dist/cjs.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=style!./src/components/loading/index.ux?uxType=comp")
+var $app_script$ = __webpack_require__(/*! !../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/script-loader.js!../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/module-loader.js!../../../node_modules/babel-loader?cwd=/Users/lijun/Downloads/complaint/babySongQuickapp&plugins[]=/Users/lijun/Downloads/complaint/babySongQuickapp/node_modules/@hap-toolkit/dsl-xvm/lib/loader/babel-plugin-jsx.js&comments=false!../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=script!./index.ux?uxType=comp */ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/script-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/module-loader.js!./node_modules/babel-loader/lib/index.js?cwd=/Users/lijun/Downloads/complaint/babySongQuickapp&plugins[]=/Users/lijun/Downloads/complaint/babySongQuickapp/node_modules/@hap-toolkit/dsl-xvm/lib/loader/babel-plugin-jsx.js&comments=false!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=script!./src/components/loading/index.ux?uxType=comp")
+
+$app_define$('@app-component/loading-view', [], function($app_require$, $app_exports$, $app_module$){
+     $app_script$($app_module$, $app_exports$, $app_require$)
+     if ($app_exports$.__esModule && $app_exports$.default) {
+            $app_module$.exports = $app_exports$.default
+        }
+     $app_module$.exports.template = $app_template$
+     $app_module$.exports.style = $app_style$
+})
+
+
+/***/ }),
+
+/***/ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/ux-loader.js?cwd=/Users/lijun/Downloads/complaint/babySongQuickapp&type=import!./src/components/minplay/index.ux?uxType=comp&name=min-play":
+/*!*************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/@hap-toolkit/dsl-xvm/lib/loader/ux-loader.js?cwd=/Users/lijun/Downloads/complaint/babySongQuickapp&type=import!./src/components/minplay/index.ux?uxType=comp&name=min-play ***!
+  \*************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var $app_template$ = __webpack_require__(/*! !../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/template-loader.js!../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=template!./index.ux?uxType=comp& */ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/template-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=template!./src/components/minplay/index.ux?uxType=comp&")
+var $app_style$ = __webpack_require__(/*! !../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/style-loader.js?index=0&type=style!less-loader!../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=style!./index.ux?uxType=comp */ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/style-loader.js?index=0&type=style!./node_modules/less-loader/dist/cjs.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=style!./src/components/minplay/index.ux?uxType=comp")
+var $app_script$ = __webpack_require__(/*! !../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/script-loader.js!../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/module-loader.js!../../../node_modules/babel-loader?cwd=/Users/lijun/Downloads/complaint/babySongQuickapp&plugins[]=/Users/lijun/Downloads/complaint/babySongQuickapp/node_modules/@hap-toolkit/dsl-xvm/lib/loader/babel-plugin-jsx.js&comments=false!../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=script!./index.ux?uxType=comp */ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/script-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/module-loader.js!./node_modules/babel-loader/lib/index.js?cwd=/Users/lijun/Downloads/complaint/babySongQuickapp&plugins[]=/Users/lijun/Downloads/complaint/babySongQuickapp/node_modules/@hap-toolkit/dsl-xvm/lib/loader/babel-plugin-jsx.js&comments=false!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=script!./src/components/minplay/index.ux?uxType=comp")
+
+$app_define$('@app-component/min-play', [], function($app_require$, $app_exports$, $app_module$){
+     $app_script$($app_module$, $app_exports$, $app_require$)
+     if ($app_exports$.__esModule && $app_exports$.default) {
+            $app_module$.exports = $app_exports$.default
+        }
+     $app_module$.exports.template = $app_template$
+     $app_module$.exports.style = $app_style$
+})
+
+
+/***/ }),
+
+/***/ "./src/api/list.js":
+/*!*************************!*\
+  !*** ./src/api/list.js ***!
+  \*************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 exports.getData = getData;
-function getData(label) {
-    var page_no = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
-    var page_size = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
 
-    var params = {
-        page_no: page_no,
-        page_size: page_size,
-        label: label
-    };
-    return $http.get('/v1/card_list', params);
+function getData(label) {
+  var page_no = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+  var page_size = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
+  var params = {
+    page_no: page_no,
+    page_size: page_size,
+    label: label
+  };
+  return $http.get('/v1/card_list', params);
 }
 
+/***/ }),
+
+/***/ "./src/pages/card/list/index.ux?uxType=page":
+/*!**************************************************!*\
+  !*** ./src/pages/card/list/index.ux?uxType=page ***!
+  \**************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(/*! !../../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/ux-loader.js?cwd=/Users/lijun/Downloads/complaint/babySongQuickapp&type=import!../../../components/loading/index.ux?uxType=comp&name=loading-view */ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/ux-loader.js?cwd=/Users/lijun/Downloads/complaint/babySongQuickapp&type=import!./src/components/loading/index.ux?uxType=comp&name=loading-view")
+__webpack_require__(/*! !../../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/ux-loader.js?cwd=/Users/lijun/Downloads/complaint/babySongQuickapp&type=import!../../../components/minplay/index.ux?uxType=comp&name=min-play */ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/ux-loader.js?cwd=/Users/lijun/Downloads/complaint/babySongQuickapp&type=import!./src/components/minplay/index.ux?uxType=comp&name=min-play")
+__webpack_require__(/*! !../../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/ux-loader.js?cwd=/Users/lijun/Downloads/complaint/babySongQuickapp&type=import!../../../components/load-more/index.ux?uxType=comp&name=load-more */ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/ux-loader.js?cwd=/Users/lijun/Downloads/complaint/babySongQuickapp&type=import!./src/components/load-more/index.ux?uxType=comp&name=load-more")
+var $app_template$ = __webpack_require__(/*! !../../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!../../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/template-loader.js!../../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=template!./index.ux?uxType=page&importNames[]=loading-view,importNames[]=min-play,importNames[]=load-more */ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/template-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=template!./src/pages/card/list/index.ux?uxType=page&importNames[]=loading-view,importNames[]=min-play,importNames[]=load-more")
+var $app_style$ = __webpack_require__(/*! !../../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!../../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/style-loader.js?index=0&type=style!less-loader!../../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=style!./index.ux?uxType=page */ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/style-loader.js?index=0&type=style!./node_modules/less-loader/dist/cjs.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=style!./src/pages/card/list/index.ux?uxType=page")
+var $app_script$ = __webpack_require__(/*! !../../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/script-loader.js!../../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/module-loader.js!../../../../node_modules/babel-loader?cwd=/Users/lijun/Downloads/complaint/babySongQuickapp&plugins[]=/Users/lijun/Downloads/complaint/babySongQuickapp/node_modules/@hap-toolkit/dsl-xvm/lib/loader/babel-plugin-jsx.js&comments=false!../../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/access-loader.js!../../../../node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=script!./index.ux?uxType=page */ "./node_modules/@hap-toolkit/dsl-xvm/lib/loader/script-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/module-loader.js!./node_modules/babel-loader/lib/index.js?cwd=/Users/lijun/Downloads/complaint/babySongQuickapp&plugins[]=/Users/lijun/Downloads/complaint/babySongQuickapp/node_modules/@hap-toolkit/dsl-xvm/lib/loader/babel-plugin-jsx.js&comments=false!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/access-loader.js!./node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=script!./src/pages/card/list/index.ux?uxType=page")
+
+$app_define$('@app-component/index', [], function($app_require$, $app_exports$, $app_module$){
+     $app_script$($app_module$, $app_exports$, $app_require$)
+     if ($app_exports$.__esModule && $app_exports$.default) {
+            $app_module$.exports = $app_exports$.default
+        }
+     $app_module$.exports.template = $app_template$
+     $app_module$.exports.style = $app_style$
+})
+
+$app_bootstrap$('@app-component/index',{ packagerVersion: '0.4.3'})
+
+
 /***/ })
-/******/ ]);
+
+/******/ });
   };
   if (typeof window === "undefined") {
     return createPageHandler();
