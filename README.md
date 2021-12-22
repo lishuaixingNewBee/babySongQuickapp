@@ -1,19 +1,20 @@
 # 熊宝儿歌故事QuickApp
+
 <p align="center">
-  <img height="80" src="https://user-gold-cdn.xitu.io/2019/8/27/16cd140d8008202a?w=1515&h=454&f=png&s=83642">
+  <img height="80" src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/8/27/16cd140d8008202a~tplv-t2oaga2asx-image.image">
 </p>
 熊宝儿歌故事基于快应用技术开发，且小程序版已经上线欢迎大家体验，由于快应用推出时间不久，网络上关于快应用的资料少之又少，本人也因公司需求进行开发，一路上踩坑无数，并集成友盟统计，完全遵循正式项目，今想把自己的一些经验分享出来，让大家少走弯路，如有错误和意见欢迎大家提出，共同进步。
 
-![banner.png](https://user-gold-cdn.xitu.io/2018/11/22/1673a99b22d4de1c?w=2800&h=1724&f=png&s=782271)
+![banner.png](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2018/11/22/1673a99b22d4de1c~tplv-t2oaga2asx-image.image)
 
 - [线上开源地址](https://github.com/lishuaixingNewBee/babySongQuickapp) https://github.com/lishuaixingNewBee/babySongQuickapp 点个赞吧！
 - [快应用开发文档](https://doc.quickapp.cn/)
 
-![首页](https://user-gold-cdn.xitu.io/2018/11/22/1673aaa9f1bb50ce?w=260&h=466&f=gif&s=1835323)
+![首页](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2018/11/22/1673aaa9f1bb50ce~tplv-t2oaga2asx-image.image)
 
-![音乐/视频](https://user-gold-cdn.xitu.io/2018/11/22/1673aab73d0246d5?w=260&h=466&f=gif&s=3308757)
+![音乐/视频](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2018/11/22/1673aab73d0246d5~tplv-t2oaga2asx-image.image)
 
-![信息流](https://user-gold-cdn.xitu.io/2018/11/22/1673aacdcee6238a?w=260&h=466&f=gif&s=2998732)
+![信息流](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2018/11/22/1673aacdcee6238a~tplv-t2oaga2asx-image.image)
 
 
 `以下所有 API 均由产品公司自身提供，本人皆从网络获取。获取与共享之行为或有侵犯产品权益的嫌疑。若被告知需停止共享与使用，本人会及时删除此页面与整个项目。请您暸解相关情况，并遵守产品协议。`
@@ -113,7 +114,7 @@ npm run release -- --debug
    - 组件没有onDestroy钩子，用if不会被触发。
    - 无selectionchange 选中文本改变和光标移动时触发(据说1030会加上)。
    - 有没有类似 touchstart  和 touchend的事件(确定1030会加上)。
-   - this.$forceUpdate()相当于vue的this.$nextTick()
+   - this.$forceUpdate()相当于vue的this.$forceUpdate()，实例重新渲染(快应用解决一些页面渲染问题的未知bug)。
   ```
 3. 重新封装fetch接口
 ```
@@ -200,10 +201,9 @@ injectRef.$http = http
 
 ### ○ 更新记录
 #### 2018.11.23
-#### 2019.5.8  更新toolkit
 ```
     -  求小伙伴一起维护项目
 ```
 <p align="center">
-  <img height="200" src="https://user-gold-cdn.xitu.io/2018/11/23/1673ea1d0980ff01?w=516&h=365&f=png&s=196419">
+  <img height="160" src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2018/11/23/1673ea1d0980ff01~tplv-t2oaga2asx-image.image">
 </p>
